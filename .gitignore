@@ -17,3 +17,7 @@
 .umi
 .umi-production
 *.css
+
+.sass-cache/
+
+*.css.map

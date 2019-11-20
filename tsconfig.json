@@ -10,7 +10,11 @@
     "baseUrl": ".",
     "strict": true,
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@Components": ["src/components"],
+      "@Components/*": ["src/components/*"],
+      "@Utils": ["src/utils"],
+      "@Utils/*": ["src/utils/*"]
     },
     "allowSyntheticDefaultImports": true
   }

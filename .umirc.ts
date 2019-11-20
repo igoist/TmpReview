@@ -16,18 +16,13 @@ const config: IConfig = {
         dll: false,
 
         routes: {
-          exclude: [
-            /models\//,
-            /services\//,
-            /model\.(t|j)sx?$/,
-            /service\.(t|j)sx?$/,
-            /components\//,
-          ],
+          exclude: [/models\//, /services\//, /model\.(t|j)sx?$/, /service\.(t|j)sx?$/, /components\//],
         },
       },
     ],
   ],
   alias: {
+    '@Components': path.resolve(__dirname, 'src/components'),
     '@Services': path.resolve(__dirname, 'src/services'),
     '@Utils': path.resolve(__dirname, 'src/utils'),
   },
