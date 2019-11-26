@@ -1,1 +1,1 @@
-export { default as SCard } from './SCard';
+export { SCard, SCard2, SCardBlank } from './SCard';

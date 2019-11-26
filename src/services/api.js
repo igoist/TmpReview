@@ -15,6 +15,10 @@ const sendXMLHttpRequest = config => {
   xhr.send(JSON.stringify(config.body));
 };
 
+export const searchWorks = url => {
+  return request(url);
+};
+
 export const loginRequest = passwd => {
   return request('/api/login', {
     method: 'POST',

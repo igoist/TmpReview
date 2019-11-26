@@ -2,88 +2,496 @@
 
 $n: 5;
 
-.#{$HB}-scards-wrap {
-  margin: 0 auto;
-  width: 1120px;
+$HBBanner: $HB + '-banner';
+.#{$HBBanner} {
+  position: relative;
+  height: 400px;
+  background-image: url(//hbfile.huabanimg.com/9f27e98be593f477ef0279d2e82923068a826674);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 
-  &.grid {
-    display: grid;
-    // grid-template-columns: repeat($n, 1fr);
-    // grid-auto-rows: minmax($minRowHeight, auto);
-    // grid-gap: 5px;
+  .#{$HBBanner}-title {
+    position: absolute;
+    top: 50px;
+    margin: 0;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    color: #000;
+    font-size: 40px;
+    font-weight: normal;
+    text-align: center;
+    letter-spacing: -1px;
+  }
 
-    .row {
-      display: grid;
-      grid-column: 1 / 6;
-      grid-gap: 30px;
-      grid-template-columns: repeat($n, 1fr);
+  .#{$HBBanner}-e {
+    position: absolute;
+    left: 50%;
+    top: 204px;
+    width: 123px;
+    height: 57px;
+    background-image: url(//hbfile.huabanimg.com/05bdcde766f63345c87fa2f5f204b8586a38d44d);
+    background-size: cover;
+    color: #000;
+    font-size: 16px;
+    text-align: center;
+    transform: translateX(-50%);
 
-      .#{$HB}-scard {
-        // padding: 12px 20px;
-        // background: $bgColor;
-        // background: var(--color);
-        // border: 1px solid #333;
-        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(0, 0, 0, 0.26);
+    .#{$HBBanner}-e-0 {
+      margin-bottom: 13px;
+      height: 22px;
+      line-height: 22px;
+    }
+    .#{$HBBanner}-e-1 {
+      height: 22px;
+      line-height: 22px;
+    }
+  }
+
+  .#{$HBBanner}-time {
+    position: absolute;
+    top: 307px;
+    width: 100%;
+    color: #000;
+    font-size: 16px;
+    text-align: center;
+  }
+}
+
+.#{$HB}-wrap {
+  padding-top: 100px;
+  background-color: #31353e;
+  text-align: center;
+
+  .#{$HB}-rate-group {
+    .#{$HB}-scards-wrap {
+      position: relative;
+    }
+
+    .#{$HB}-rate-group-r,
+    .#{$HB}-rate-group-l {
+      position: absolute;
+      top: 206px;
+      width: 19px;
+      height: 32px;
+      background-size: 19px 32px;
+      cursor: pointer;
+
+      &.disabled {
+        cursor: not-allowed;
+      }
+    }
+
+    .#{$HB}-rate-group-l {
+      left: -45px;
+      background-image: url(assets/arrow-l.svg);
+
+      &.disabled {
+        background-image: url(assets/arrow-l-disabled.svg);
+      }
+    }
+
+    .#{$HB}-rate-group-r {
+      right: -45px;
+      background-image: url(assets/arrow-r.svg);
+
+      &.disabled {
+        background-image: url(assets/arrow-r-disabled.svg);
+      }
+    }
+
+    .#{$HB}-rate {
+      margin: 0 auto;
+      height: 57px;
+      background-repeat: no-repeat;
+    }
+
+    .#{$HB}-rate-5 {
+      width: 268px;
+      background-image: url(assets/rate5.svg);
+    }
+    .#{$HB}-rate-3 {
+      width: 160px;
+      background-image: url(assets/rate3.svg);
+    }
+    .#{$HB}-rate-1 {
+      width: 54px;
+      background-image: url(assets/rate1.svg);
+    }
+
+    .#{$HB}-rate-title {
+      margin-top: -26px;
+      margin-bottom: 20px;
+      height: 30px;
+      line-height: 30px;
+      color: #fff;
+      font-size: 24px;
+
+      span {
+        font-weight: 100;
       }
     }
   }
 }
 
-.#{$HB}-scard {
+$HBScard: $HB + '-scard';
+$HBScardBlank: $HB + '-scard-blank';
+
+.#{$HB}-scards-wrap-outer {
+  padding-top: 18px;
+  padding-bottom: 18px;
+  background-color: #f2f2f2;
+}
+
+.#{$HB}-scards-wrap {
+  margin: 0 auto;
+  width: 1244px;
+
+  &:not(.type2) {
+    .row {
+      position: relative;
+      margin: 0 auto;
+      margin-bottom: 80px;
+      padding-top: 39px;
+      height: 444px;
+
+      &:before {
+        content: '';
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background-color: #fff;
+      }
+    }
+
+    .#{$HBScardBlank},
+    .#{$HBScard} {
+      float: left;
+      width: 236px;
+
+      &:not(:last-child) {
+        margin-right: 16px;
+      }
+    }
+
+    .#{$HBScard} {
+      .#{$HBScard}-title {
+        text-align: left;
+      }
+
+      .#{$HBScard}-body {
+        position: relative;
+        height: 208px;
+      }
+
+      .#{$HBScard}-evaluate {
+        position: absolute;
+        top: 88px;
+        left: 0;
+        padding: 20px 15px;
+        width: 236px;
+        height: 120px;
+        line-height: 20px;
+        color: #fff;
+        font-size: 14px;
+        text-align: left;
+
+        &:after,
+        &:before {
+          position: absolute;
+          height: 20px;
+          line-height: 20px;
+        }
+
+        &:before {
+          content: '“';
+          top: 0;
+          left: 15px;
+        }
+        &:after {
+          content: '”';
+          bottom: 0;
+          right: 15px;
+        }
+      }
+    }
+
+    .#{$HBScardBlank} {
+      position: relative;
+      height: 324px;
+      background-color: #87898d;
+
+      .#{$HBScardBlank}-b2 {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 88px;
+        background-color: #989a9e;
+      }
+      .#{$HBScardBlank}-b3 {
+        position: absolute;
+        bottom: 59px;
+        left: 15px;
+        width: 206px;
+        height: 14px;
+        background-color: #87898d;
+      }
+      .#{$HBScardBlank}-b4 {
+        position: absolute;
+        bottom: 25px;
+        left: 15px;
+        width: 79px;
+        height: 14px;
+        background-color: #87898d;
+      }
+    }
+  }
+
+  &.type2 {
+    height: 896px;
+
+    .row {
+      margin-bottom: 16px;
+    }
+
+    .#{$HBScard} {
+      float: left;
+      width: 236px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.16);
+
+      &:not(:last-child) {
+        margin-right: 16px;
+      }
+
+      .#{$HBScard}-body {
+        position: relative;
+        height: 196px;
+        background-color: #fff;
+      }
+
+      .#{$HBScard}-extra-wrap {
+        height: 158px;
+      }
+
+      .#{$HBScard}-des {
+        position: absolute;
+        top: 0;
+        left: 15px;
+        width: 206px;
+        height: 66px;
+        line-height: 22px;
+        font-size: 14px;
+        text-align: left;
+        overflow: hidden;
+      }
+
+      .#{$HBScard}-avatar {
+        top: 68px;
+        left: 15px;
+      }
+
+      .#{$HBScard}-username {
+        top: 74px;
+        left: 55px;
+      }
+
+      .#{$HBScard}-special {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 48px;
+        line-height: 48px;
+        background-color: #fafafa;
+      }
+
+      .ant-rate {
+        float: left;
+        margin-left: 15px;
+        font-size: 14px;
+      }
+
+      .#{$HBScard}-btn {
+        border: none;
+        width: 96px;
+        height: 24px;
+        line-height: 24px;
+        font-size: 12px;
+      }
+
+      .#{$HBScard}-btn-out {
+        margin-right: 7px;
+        background-color: #ededed;
+        color: #444444;
+      }
+
+      .#{$HBScard}-btn-rate {
+        margin-left: 7px;
+        background-color: #fed452;
+        color: #fff;
+      }
+
+      .#{$HBScard}-span {
+        position: absolute;
+        color: #fff;
+        font-size: 12px;
+      }
+
+      .#{$HBScard}-span-out {
+        left: 15px;
+        width: 50px;
+        color: #444444;
+        text-align: left;
+      }
+
+      .#{$HBScard}-span-rate {
+        right: 15px;
+        width: 50px;
+        color: #ec414d;
+        text-align: right;
+        cursor: pointer;
+      }
+
+      .#{$HBScard}-span-evaluate {
+        left: 100px;
+        padding: 0 5px;
+        max-width: 86px;
+        height: 100%;
+        color: #444444;
+        cursor: pointer;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        &:before {
+          content: '“';
+          position: absolute;
+          left: 0px;
+        }
+        &:after {
+          content: '”';
+          position: absolute;
+          right: 0px;
+        }
+      }
+
+      .#{$HB}-scard-span-evaluate-null {
+        left: 105px;
+        color: #bbbbbb;
+      }
+
+      .ant-rate-star:not(:last-child) {
+        margin-right: 2px;
+      }
+    }
+  }
+}
+
+.#{$HBScard} {
   border: none;
 
-  .ant-card-body {
-    padding: 0;
+  .#{$HBScard}-cover {
+    position: relative;
+
+    img {
+      width: 236px;
+      height: 236px;
+    }
   }
 
-  .#{$HB}-scard-title {
-    margin: 10px 0;
-    padding: 0;
+  .#{$HBScard}-n {
+    position: absolute;
+    top: 200px;
+    left: 16px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    background-color: rgba(0, 0, 0, 0.86);
+    color: #fff;
+    font-size: 10px;
+    text-align: center;
+  }
+
+  .#{$HBScard}-title {
+    padding: 10px 15px;
     width: 100%;
-    height: 18px;
+    height: 38px;
     line-height: 18px;
+    color: #444444;
     font-size: 14px;
+    font-weight: bold;
+    text-align: left;
   }
 
-  .#{$HB}-scard-extra-wrap {
+  .#{$HBScard}-extra-wrap {
     position: relative;
     width: 100%;
-    height: 140px;
+    height: 88px;
+    background-color: #fff;
   }
 
-  .#{$HB}-scard-avatar {
+  .#{$HBScard}-avatar {
     position: absolute;
-    top: 0;
+    top: 38px;
     left: 12px;
     width: 32px;
     height: 32px;
     background-size: 32px;
   }
 
-  .#{$HB}-scard-username {
+  .#{$HBScard}-username {
     position: absolute;
-    top: 6px;
+    top: 44px;
     left: 52px;
     height: 20px;
     line-height: 20px;
     font-size: 12px;
-    color: #888;
+    color: #9e7e6b;
+  }
+}
+
+.#{$HB}-works-tab {
+  margin: 0 auto;
+  margin-top: 60px;
+  padding-top: 18px;
+  padding-bottom: 15px;
+  width: 100%;
+  min-width: 1120px;
+  background-color: #fff;
+
+  .ant-card-body {
+    padding-top: 17px;
+    padding-bottom: 20px;
   }
 
-  .#{$HB}-scard-evaluate {
-    position: absolute;
-    top: 42px;
-    left: 5px;
-    width: 190px;
-    height: 88px;
-    line-height: 22px;
-    font-size: 14px;
-    // white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    // -webkit-line-clamp: 4;
-    // word-break: break-all;
-    // display: -webkit-box;
-    // -webkit-box-orient: vertical;
+  .#{$HB}-works-tab-title {
+    margin-bottom: 12px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #222222;
+  }
+
+  ul {
+    display: inline-block;
+    margin-bottom: 0;
+    list-style: none;
+    text-align: center;
+
+    li {
+      float: left;
+      padding: 0 12px;
+      height: 22px;
+      line-height: 22px;
+
+      &.active {
+        color: #ff2355;
+      }
+    }
   }
 }
