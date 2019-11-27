@@ -62,7 +62,7 @@ const SCard2 = (props: any) => {
 
   return (
     <div className={`${HBScard} clearfix`}>
-      <div className={`${HBScard}-cover`}>
+      <div className={`${HBScard}-cover`} onClick={() => handleEdit(p)}>
         <img alt='example' src={works[0].cover} />
         <div className={`${HBScard}-n`}>{works.length}</div>
       </div>

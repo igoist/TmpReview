@@ -17,6 +17,7 @@ export default {
     rate5Max: 5,
     rate3Max: 10,
     rate1Max: 50,
+    perPageLimit: 20,
   },
   subscriptions: {
     setup({ dispatch, history }) {
@@ -38,12 +39,11 @@ export default {
   },
   effects: {
     *fetch({ type, payload }, { put, call, select }) {
-      // const t = yield select(state => state.page);
-      // console.log('t: ', t);
+      const t = yield select(state => state.page);
       // const { category, page, limit } = payload;
       const category = payload ? payload.category : 0;
       const page = payload ? payload.page : 1;
-      const limit = payload ? payload.limit : 10;
+      const limit = payload ? payload.limit : t.perPageLimit;
       const res = yield requestUrl(`/api/works?category=${category}&limit=${limit}&page=${page}`);
       console.log('here fetch: ', res);
       if (res.works) {

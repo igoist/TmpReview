@@ -7,6 +7,19 @@ $HBEditBox: $HB + '-edit-box';
   left: 0;
   background: #3339;
   overflow: auto;
+  z-index: 10999;
+
+  .#{$HBEditBox}-close {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    color: #fff;
+    font-size: 32px;
+    cursor: pointer;
+  }
 
   .#{$HBEditBox} {
     position: relative;
@@ -106,6 +119,10 @@ $HBEditBox: $HB + '-edit-box';
 
       .#{$HBEditBox}-left-item:not(:last-child) {
         margin-bottom: 30px;
+      }
+
+      .#{$HBEditBox}-left-item:last-child {
+        margin-bottom: 60px;
       }
 
       .#{$HBEditBox}-work {

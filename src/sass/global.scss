@@ -1,15 +1,81 @@
 @import 'common';
 
-$n: 5;
+.#{$HB}-login-input {
+  margin: 0 auto;
+  margin-top: 16px;
+  margin-bottom: 12px;
+  display: block;
+  width: 280px;
+  text-align: center;
+}
+
+.#{$HB}-login-btn {
+  display: block;
+  margin: 0 auto;
+  width: 280px;
+  border: none;
+  background-color: #000;
+  color: #fff;
+
+  &:focus,
+  &:active,
+  &:hover {
+    border: none;
+    color: #fff;
+    background-color: #000;
+  }
+
+  &.ant-btn[disabled] {
+    border: none;
+    color: #fff;
+    background-color: #333;
+  }
+}
+
+.#{$HB}-header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 48px;
+  background-color: #fff;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+  z-index: 10100;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    width: 80px;
+    height: 28px;
+    background-image: url(assets/logo.svg);
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    transform: translateX(-50%);
+  }
+}
 
 $HBBanner: $HB + '-banner';
 .#{$HBBanner} {
+  margin-top: 46px;
   position: relative;
   height: 400px;
-  background-image: url(//hbfile.huabanimg.com/9f27e98be593f477ef0279d2e82923068a826674);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  // background-image: url(//hbfile.huabanimg.com/9f27e98be593f477ef0279d2e82923068a826674);
+  // background-size: cover;
+  // background-position: center;
+  // background-repeat: no-repeat;
+
+  &:before {
+    content: '';
+    position: fixed;
+    width: 100%;
+    height: 852px;
+    background-image: url(//hbfile.huabanimg.com/ca5029002be865369bc45407fce1d3268c40b5bd);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1;
+  }
 
   .#{$HBBanner}-title {
     position: absolute;
@@ -252,7 +318,7 @@ $HBScardBlank: $HB + '-scard-blank';
   }
 
   &.type2 {
-    height: 896px;
+    height: 1792px;
 
     .row {
       margin-bottom: 16px;
@@ -396,6 +462,7 @@ $HBScardBlank: $HB + '-scard-blank';
 
   .#{$HBScard}-cover {
     position: relative;
+    cursor: pointer;
 
     img {
       width: 236px;
@@ -463,11 +530,6 @@ $HBScardBlank: $HB + '-scard-blank';
   min-width: 1120px;
   background-color: #fff;
 
-  .ant-card-body {
-    padding-top: 17px;
-    padding-bottom: 20px;
-  }
-
   .#{$HB}-works-tab-title {
     margin-bottom: 12px;
     height: 30px;
@@ -488,6 +550,7 @@ $HBScardBlank: $HB + '-scard-blank';
       padding: 0 12px;
       height: 22px;
       line-height: 22px;
+      cursor: pointer;
 
       &.active {
         color: #ff2355;

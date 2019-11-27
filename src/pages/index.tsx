@@ -3,7 +3,7 @@ import React from 'react';
 import { connect } from 'dva';
 import { SCard, SCard2, SCardBlank } from '@Components';
 import { HB } from '@Utils';
-import { Button, Input, Radio, Rate, Pagination } from 'antd';
+import { Button, Icon, Input, Radio, Rate, Pagination } from 'antd';
 
 const { useState, useEffect } = React;
 
@@ -36,7 +36,22 @@ const App = (props: AppPropsType) => {
     });
   };
 
-  const { totalCount, rate5list, rate5Count, rate3list, rate3Count, rate1list, rate1Count, unCount, outCount, list, rate5Max, rate3Max, rate1Max } = page;
+  const {
+    totalCount,
+    rate5list,
+    rate5Count,
+    rate3list,
+    rate3Count,
+    rate1list,
+    rate1Count,
+    unCount,
+    outCount,
+    list,
+    rate5Max,
+    rate3Max,
+    rate1Max,
+    perPageLimit,
+  } = page;
   const [category, setCategory] = useState(0);
   const [currentTotal, setCurrentTotal] = useState(totalCount);
   const [currentPage, setCurrentPage] = useState(1);
@@ -88,7 +103,7 @@ const App = (props: AppPropsType) => {
       payload: {
         category: n,
         page: 1,
-        limit: 10,
+        limit: perPageLimit,
       },
     });
     setCurrentPage(1);
@@ -101,7 +116,7 @@ const App = (props: AppPropsType) => {
       payload: {
         category,
         page: newPage,
-        limit: 10,
+        limit: perPageLimit,
       },
     });
   };
@@ -112,7 +127,7 @@ const App = (props: AppPropsType) => {
       payload: {
         category: category,
         page: currentPage,
-        limit: 10,
+        limit: perPageLimit,
       },
     });
   };
@@ -212,6 +227,7 @@ const App = (props: AppPropsType) => {
     if (editing) {
       return (
         <div className={`${HBEditBox}-wrap`} onClick={closeEditBox}>
+          <Icon className={`${HBEditBox}-close`} type='close' />
           <div className={`${HBEditBox}`} onClick={stopPropagation}>
             <div className={`${HBEditBox}-top`}>
               <div className={`${HBEditBox}-top-title`}>{tmpObj && tmpObj.title}</div>
@@ -295,14 +311,14 @@ const App = (props: AppPropsType) => {
   }, [category, outCount, rate1Count, rate3Count, rate5Count, totalCount, unCount]);
 
   useEffect(() => {
-    if (currentPage > Math.ceil(currentTotal / 10)) {
+    if (currentPage > Math.ceil(currentTotal / perPageLimit)) {
       setCurrentPage(1);
       dispatch({
         type: 'page/fetch',
         payload: {
           category: category,
           page: 1,
-          limit: 10,
+          limit: perPageLimit,
         },
       });
     }
@@ -342,7 +358,7 @@ const App = (props: AppPropsType) => {
           {/* <div className='row clearfix' style={{ width: `${rate5Arr.length > 0 ? rate5Arr.length * 236 + (rate5Arr.length - 1) * 16 : 0}px` }}> */}
           <div className='row clearfix' style={{ width: `${count5Set * 236 + (count5Set - 1) * 16}px` }}>
             {rate5Arr.map((v: any, i: number) => {
-              return <SCard key={i.toString()} {...v} />;
+              return <SCard key={i.toString()} handleEdit={openEditBox} {...v} />;
             })}
             {blankArr5.length > 0 &&
               blankArr5.map((_: any, index: number) => {
@@ -364,7 +380,7 @@ const App = (props: AppPropsType) => {
           {/* <div className='row clearfix' style={{ width: `${rate3Arr.length > 0 ? rate3Arr.length * 236 + (rate3Arr.length - 1) * 16 : 0}px` }}> */}
           <div className='row clearfix' style={{ width: `${count3Set * 236 + (count3Set - 1) * 16}px` }}>
             {rate3Arr.map((v: any, i: number) => {
-              return <SCard key={i.toString()} {...v} />;
+              return <SCard key={i.toString()} handleEdit={openEditBox} {...v} />;
             })}
             {blankArr3.length > 0 &&
               blankArr3.map((_: any, index: number) => {
@@ -388,7 +404,7 @@ const App = (props: AppPropsType) => {
           {/* <div className='row clearfix' style={{ width: `${rate3Arr.length > 0 ? rate3Arr.length * 236 + (rate3Arr.length - 1) * 16 : 0}px` }}> */}
           <div className='row clearfix' style={{ width: `${count1Set * 236 + (count1Set - 1) * 16}px` }}>
             {rate1Arr.map((v: any, i: number) => {
-              return <SCard key={i.toString()} {...v} />;
+              return <SCard key={i.toString()} handleEdit={openEditBox} {...v} />;
             })}
             {blankArr1.length > 0 &&
               blankArr1.map((_: any, index: number) => {
@@ -404,10 +420,15 @@ const App = (props: AppPropsType) => {
 
   if (!ifLogin) {
     return (
-      <div className={'styles.normal'}>
-        <div className={'styles.welcome'} />
-        <Input onChange={onPasswordChange} placeholder={'请输入访问密码'} />
-        <Button onClick={handleClick} disabled={passwd === '' ? true : false}>
+      <div className={''}>
+        <Input
+          className={`${HB}-login-input`}
+          prefix={<Icon type='lock' style={{ color: 'rgba(0,0,0,.25)' }} />}
+          type='password'
+          onChange={onPasswordChange}
+          placeholder={'请输入访问密码'}
+        />
+        <Button className={`${HB}-login-btn`} onClick={handleClick} disabled={passwd === '' ? true : false}>
           登录
         </Button>
       </div>
@@ -449,9 +470,19 @@ const App = (props: AppPropsType) => {
                   return <SCard2 key={i.toString()} handleEdit={openEditBox} handlePostOut={handlePostOut} {...v} />;
                 })}
               </div>
+              <div className='row clearfix'>
+                {list.slice(10, 15).map((v: any, i: number) => {
+                  return <SCard2 key={i.toString()} handleEdit={openEditBox} handlePostOut={handlePostOut} {...v} />;
+                })}
+              </div>
+              <div className='row clearfix'>
+                {list.slice(15, 20).map((v: any, i: number) => {
+                  return <SCard2 key={i.toString()} handleEdit={openEditBox} handlePostOut={handlePostOut} {...v} />;
+                })}
+              </div>
             </div>
 
-            {currentTotal > 10 && <Pagination current={currentPage} total={currentTotal} onChange={handlePageChange} />}
+            {currentTotal > perPageLimit && <Pagination pageSize={perPageLimit} current={currentPage} total={currentTotal} onChange={handlePageChange} />}
           </div>
         </div>
         {renderEditBox()}

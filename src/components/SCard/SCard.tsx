@@ -4,7 +4,7 @@ import { HB } from '@Utils';
 const HBScard = `${HB}-scard`;
 
 const SCard = (props: any) => {
-  // const { index } = props;
+  const { handleEdit } = props;
   // const p = {
   //   title: '作品标题作品标题',
   //   cover: '//hbfile.huabanimg.com/1b8e4986034aec8113b862e99a26ff8854b8979f',
@@ -18,7 +18,7 @@ const SCard = (props: any) => {
 
   return (
     <div className={`${HBScard} clearfix`}>
-      <div className={`${HBScard}-cover`}>
+      <div className={`${HBScard}-cover`} onClick={() => handleEdit(p)}>
         <img alt='example' src={works[0].cover} />
         <div className={`${HBScard}-n`}>{works.length}</div>
       </div>
