@@ -1,4 +1,4 @@
-import { requestUrl, postUrl } from '@Services/api';
+import { requestUrl, postUrl, postBatch } from '@Services/api';
 import { message } from 'antd';
 
 export default {
@@ -86,6 +86,30 @@ export default {
       console.log('here postOut: ', res);
       if (res && res.status === 200) {
         message.success('淘汰成功');
+
+        if (callback) {
+          callback();
+        }
+      }
+    },
+    *postOutBatch({ type, payload, callback }, { put, call, select }) {
+      const t = yield select(state => state.page);
+
+      const { list } = t;
+      let tmpArr = [];
+      for (let i = 0; i < list.length; i++) {
+        let work = list[i];
+        if (work.un === true) {
+          tmpArr.push(work.id);
+        }
+      }
+
+      console.log('postOutBatch: ', tmpArr);
+
+      const res = yield postBatch(`/api/works/out/batch`, { ids: tmpArr });
+      console.log('here postOut: ', res);
+      if (res && res.status === 200) {
+        message.success('批量淘汰成功');
 
         if (callback) {
           callback();

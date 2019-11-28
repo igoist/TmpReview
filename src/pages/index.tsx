@@ -142,6 +142,13 @@ const App = (props: AppPropsType) => {
     });
   };
 
+  const handlePostOutBatch = () => {
+    dispatch({
+      type: 'page/postOutBatch',
+      callback: handledCallback,
+    });
+  };
+
   const openEditBox = (obj: any) => {
     setTmpObj(obj);
     setEditing(true);
@@ -440,7 +447,7 @@ const App = (props: AppPropsType) => {
           {renderRateGroups()}
 
           <div className={`${HB}-works-tab`}>
-            <div className={`${HB}-works-tab-title`}>212个入围作品</div>
+            <div className={`${HB}-works-tab-title`}>{totalCount}个入围作品</div>
             <ul>
               {tabArr &&
                 tabArr.map((item, index) => {
@@ -456,6 +463,8 @@ const App = (props: AppPropsType) => {
                   );
                 })}
             </ul>
+
+            <div className={`${HB}-tab-batch-btn`} onClick={handlePostOutBatch} />
           </div>
 
           <div className={`${HB}-scards-wrap-outer clearfix`}>

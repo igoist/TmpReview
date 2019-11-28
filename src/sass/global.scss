@@ -522,6 +522,7 @@ $HBScardBlank: $HB + '-scard-blank';
 }
 
 .#{$HB}-works-tab {
+  position: relative;
   margin: 0 auto;
   margin-top: 60px;
   padding-top: 18px;
@@ -555,6 +556,33 @@ $HBScardBlank: $HB + '-scard-blank';
       &.active {
         color: #ff2355;
       }
+    }
+  }
+
+  .#{$HB}-tab-batch-btn {
+    position: fixed;
+    bottom: 135px;
+    right: 100px;
+    border-radius: 16px;
+    width: 32px;
+    height: 32px;
+    background-color: #333;
+    transition: transform 0.24s ease-in-out;
+    cursor: pointer;
+
+    &:active {
+      transform: scale(0.86);
+    }
+
+    &:before {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      content: '';
+      border-radius: 10px;
+      width: 20px;
+      height: 20px;
+      background-color: #fff;
     }
   }
 }

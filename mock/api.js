@@ -151,6 +151,33 @@ export default {
       status: flag,
     });
   },
+  'POST /api/works/out/batch': (req, res) => {
+    console.log('POST /api/works/out/batch: ', req.body);
+
+    const { ids } = req.body;
+
+    console.log('here: ', typeof ids, ids);
+
+    let flag = 300;
+
+    // 有什么好的算法优化一下吗
+    for (let j = 0; j < ids.length; j++) {
+      for (let i = 0; i < worksMock.length; i++) {
+        if (worksMock[i].id === ids[j]) {
+          worksMock[i].out = true;
+          worksMock[i].un = false;
+          flag = 200;
+          break;
+        }
+      }
+    }
+
+    // console.log('POST /api/works/out flag: ', flag);
+
+    res.send({
+      status: flag,
+    });
+  },
   'POST /api/works/edit': (req, res) => {
     console.log('POST /api/works/edit: ', req.body);
 
