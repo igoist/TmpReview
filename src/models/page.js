@@ -28,7 +28,9 @@ const handleDataAll = config => {
     unrate: worksUn,
   };
 
-  list = nameMap[rating].slice((page - 1) * limit, page * limit);
+  console.log('herh: ', nameMap);
+  list = nameMap[rating] && nameMap[rating].slice((page - 1) * limit, page * limit);
+  console.log('herh2: ');
 
   return {
     // totalCount: facet.all,
