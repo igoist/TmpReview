@@ -14,21 +14,23 @@ const SCard = (props: any) => {
   // };
   const p = props;
 
-  const { title, works, avatarUrl, username, evaluate } = p;
+  const { title, banner, pins, user, comment } = p;
+
+  const { avatar, username } = user;
 
   return (
     <div className={`${HBScard} clearfix`}>
       <div className={`${HBScard}-cover`} onClick={() => handleEdit(p)}>
-        <img alt='example' src={works[0].cover} />
-        <div className={`${HBScard}-n`}>{works.length}</div>
+        <img alt='example' src={banner.url} />
+        <div className={`${HBScard}-n`}>{pins.length}</div>
       </div>
       <div className={`${HBScard}-body`}>
         <div className={`${HBScard}-extra-wrap`}>
           <div className={`${HBScard}-title`}>{title}</div>
-          <div className={`${HBScard}-avatar`} style={{ backgroundImage: `url(${avatarUrl})` }} />
+          <div className={`${HBScard}-avatar`} style={{ backgroundImage: `url(//${avatar.bucket}.huabanimg.com/${avatar.key}_sq140sf)` }} />
           <div className={`${HBScard}-username`}>{username}</div>
         </div>
-        <div className={`${HBScard}-evaluate`}>{evaluate.slice(0, 44) + (evaluate.length > 44 ? '...' : '')}</div>
+        <div className={`${HBScard}-evaluate`}>{comment.slice(0, 44) + (comment.length > 44 ? '...' : '')}</div>
       </div>
     </div>
   );

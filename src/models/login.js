@@ -1,9 +1,12 @@
-import { loginRequest } from '@Services/api';
+// import { loginRequest } from '@Services/api';
+import { requestUrl } from '@Services/api';
 import { message } from 'antd';
 
 export default {
   state: {
     ifLogin: false,
+    // password: '2083dc35-79ec-430c-a96b-6054ec15c991',
+    password: '',
   },
   subscriptions: {
     // setup({ dispatch, history }) {
@@ -24,15 +27,18 @@ export default {
   },
   effects: {
     *tryLogin({ type, payload }, { put, call, select }) {
-      const res = yield loginRequest(payload.password);
-      console.log(res);
+      // const res = yield loginRequest(payload.password);
+      // console.log(res);
 
-      if (res.status === 200) {
+      let res = yield requestUrl(`/invite/${payload.password}/api/vote/works?rating=${'all'}&limit=${20}&page=${1}`);
+
+      if (res && res.works) {
         message.success('登录成功');
         yield put({
           type: 'save',
           payload: {
             ifLogin: true,
+            password: payload.password,
           },
         });
       } else {

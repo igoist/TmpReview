@@ -20,10 +20,12 @@ const SCard2 = (props: any) => {
   // };
   const p = props;
 
-  const { title, works, avatarUrl, username, rate, evaluate, un, out } = p;
+  const { title, desc, banner, pins, user, rating, comment } = p;
+
+  const { avatar, username } = user;
 
   const renderSpecial = () => {
-    if (un) {
+    if (rating === undefined) {
       return (
         <>
           <Button className={`${HBScard}-btn ${HBScard}-btn-out`} onClick={() => handlePostOut(id)}>
@@ -34,7 +36,7 @@ const SCard2 = (props: any) => {
           </Button>
         </>
       );
-    } else if (out) {
+    } else if (rating === 0) {
       return (
         <>
           <span className={`${HBScard}-span ${HBScard}-span-out`}>淘汰</span>
@@ -46,11 +48,11 @@ const SCard2 = (props: any) => {
     } else {
       return (
         <>
-          <Rate disabled={true} value={rate} />
-          {evaluate === '' ? (
+          <Rate disabled={true} value={rating} />
+          {comment === '' ? (
             <span className={`${HBScard}-span ${HBScard}-span-evaluate-null`}>请添加评语</span>
           ) : (
-            <span className={`${HBScard}-span ${HBScard}-span-evaluate`}>{evaluate}</span>
+            <span className={`${HBScard}-span ${HBScard}-span-evaluate`}>{comment}</span>
           )}
           <span className={`${HBScard}-span ${HBScard}-span-rate`} onClick={() => handleEdit(p)}>
             更改
@@ -63,14 +65,14 @@ const SCard2 = (props: any) => {
   return (
     <div className={`${HBScard} clearfix`}>
       <div className={`${HBScard}-cover`} onClick={() => handleEdit(p)}>
-        <img alt='example' src={works[0].cover} />
-        <div className={`${HBScard}-n`}>{works.length}</div>
+        <img alt='example' src={banner.url} />
+        <div className={`${HBScard}-n`}>{pins.length}</div>
       </div>
       <div className={`${HBScard}-body`}>
         <div className={`${HBScard}-title`}>{title}</div>
         <div className={`${HBScard}-extra-wrap`}>
-          <div className={`${HBScard}-des`}>{works[0].des}</div>
-          <div className={`${HBScard}-avatar`} style={{ backgroundImage: `url(${avatarUrl})` }} />
+          <div className={`${HBScard}-des`}>{desc}</div>
+          <div className={`${HBScard}-avatar`} style={{ backgroundImage: `url(//${avatar.bucket}.huabanimg.com/${avatar.key}_sq140sf)` }} />
           <div className={`${HBScard}-username`}>{username}</div>
           <div className={`${HBScard}-special`}>{renderSpecial()}</div>
         </div>

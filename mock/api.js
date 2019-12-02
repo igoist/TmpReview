@@ -14,9 +14,6 @@ var cardMock = {
   avatarUrl: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
   username: '用户名',
   evaluate: '评语评语评语评语评语评语评语评语评语评语评语评语',
-  rate: null,
-  un: true,
-  out: false,
 };
 
 let worksMock = [];
@@ -68,17 +65,17 @@ export default {
     let worksRate5 = worksMock.filter(work => work.rate === 5);
     let worksRate3 = worksMock.filter(work => work.rate === 3);
     let worksRate1 = worksMock.filter(work => work.rate === 1);
-    let worksUn = worksMock.filter(work => work.un === true);
-    let worksOut = worksMock.filter(work => work.out === true);
+    let worksUn = worksMock.filter(work => work.rate === undefined);
+    let worksOut = worksMock.filter(work => work.rate === 0);
     result.totalCount = worksAll.length;
     result.rate5Count = worksRate5.length;
     result.rate3Count = worksRate3.length;
     result.rate1Count = worksRate1.length;
     result.unCount = worksUn.length;
     result.outCount = worksOut.length;
-    result.rate5list = worksRate5;
-    result.rate3list = worksRate3;
-    result.rate1list = worksRate1;
+    result.rate5List = worksRate5;
+    result.rate3List = worksRate3;
+    result.rate1List = worksRate1;
     switch (category) {
       case 0:
         result.works = worksAll.slice((page - 1) * limit, page * limit);
@@ -113,9 +110,6 @@ export default {
 
     for (let i = 0; i < worksMock.length; i++) {
       if (worksMock[i].id === id) {
-        worksMock[i].out = false;
-        worksMock[i].un = true;
-        // ?数据是否清空?
         worksMock[i].rate = null;
         worksMock[i].evaluate = '';
         flag = 200;
@@ -138,8 +132,7 @@ export default {
 
     for (let i = 0; i < worksMock.length; i++) {
       if (worksMock[i].id === id) {
-        worksMock[i].out = true;
-        worksMock[i].un = false;
+        worksMock[i].rate = 0;
         flag = 200;
         break;
       }
@@ -164,11 +157,12 @@ export default {
     for (let j = 0; j < ids.length; j++) {
       for (let i = 0; i < worksMock.length; i++) {
         if (worksMock[i].id === ids[j]) {
-          worksMock[i].out = true;
-          worksMock[i].un = false;
-          flag = 200;
+          worksMock[i].rate = 0;
           break;
         }
+      }
+      if (j === ids.length - 1) {
+        flag = 200;
       }
     }
 

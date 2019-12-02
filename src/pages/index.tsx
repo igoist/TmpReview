@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
 import React from 'react';
 import { connect } from 'dva';
-import { SCard, SCard2, SCardBlank } from '@Components';
+import { SCard2, RateGroup } from '@Components';
 import { HB } from '@Utils';
 import { Button, Icon, Input, Radio, Rate, Pagination } from 'antd';
 
@@ -15,7 +15,32 @@ type AppPropsType = {
   dispatch: any;
 };
 
-const tabArr = ['全部', '5星', '3星', '1星', '未评', '淘汰'];
+const tabArr = [
+  {
+    title: '全部',
+    category: 'all',
+  },
+  {
+    title: '5星',
+    category: '5',
+  },
+  {
+    title: '3星',
+    category: '3',
+  },
+  {
+    title: '1星',
+    category: '1',
+  },
+  {
+    title: '未评',
+    category: 'unrate',
+  },
+  {
+    title: '淘汰',
+    category: '0',
+  },
+];
 
 const initObj: any = {};
 
@@ -38,55 +63,37 @@ const App = (props: AppPropsType) => {
 
   const {
     totalCount,
-    rate5list,
+    rate5List,
     rate5Count,
-    rate3list,
+    rate4List,
+    rate4Count,
+    rate3List,
     rate3Count,
-    rate1list,
+    rate2List,
+    rate2Count,
+    rate1List,
     rate1Count,
     unCount,
     outCount,
     list,
     rate5Max,
+    rate4Max,
     rate3Max,
+    rate2Max,
     rate1Max,
     perPageLimit,
   } = page;
-  const [category, setCategory] = useState(0);
+  const [category, setCategory] = useState('all');
   const [currentTotal, setCurrentTotal] = useState(totalCount);
   const [currentPage, setCurrentPage] = useState(1);
-
-  const [rate3Offset, setRate3Offset] = useState(0);
-  const [rate1Offset, setRate1Offset] = useState(0);
 
   const [passwd, setPasswd] = useState('');
   const [editing, setEditing] = useState(false);
 
   const [tmpObj, setTmpObj] = useState(initObj);
-  const [radioValue, setRadioValue] = useState(99);
+  const initRadioValue: number | undefined = undefined;
+  const [radioValue, setRadioValue] = useState(initRadioValue);
   const [textAreaValue, setTextAreaValue] = useState('');
-
-  const handleRate3OffsetL = () => {
-    if (rate3Offset > 0) {
-      setRate3Offset(rate3Offset - 1);
-    }
-  };
-  const handleRate3OffsetR = () => {
-    if (5 + rate3Offset < rate3list.length) {
-      setRate3Offset(rate3Offset + 1);
-    }
-  };
-
-  const handleRate1OffsetL = () => {
-    if (rate1Offset > 0) {
-      setRate1Offset(rate1Offset - 1);
-    }
-  };
-  const handleRate1OffsetR = () => {
-    if (5 + rate1Offset < rate1list.length) {
-      setRate1Offset(rate1Offset + 1);
-    }
-  };
 
   const onRadioChange = (e: any) => {
     setRadioValue(e.target.value);
@@ -96,7 +103,7 @@ const App = (props: AppPropsType) => {
     setTextAreaValue(e.target.value);
   };
 
-  const handleTab = (n: number) => {
+  const handleTab = (n: string) => {
     setCategory(n);
     dispatch({
       type: 'page/fetch',
@@ -134,9 +141,10 @@ const App = (props: AppPropsType) => {
 
   const handlePostOut = (id: number) => {
     dispatch({
-      type: 'page/postOut',
+      type: 'page/postEdit',
       payload: {
         id,
+        rating: 0,
       },
       callback: handledCallback,
     });
@@ -152,28 +160,12 @@ const App = (props: AppPropsType) => {
   const openEditBox = (obj: any) => {
     setTmpObj(obj);
     setEditing(true);
-    setTextAreaValue(obj.evaluate);
-    let tmpRadioValue = 99;
-    if (obj.un) {
-      tmpRadioValue = 0;
-    } else if (obj.out) {
-      tmpRadioValue = 1;
-    } else {
-      if (obj.rate === 5) {
-        tmpRadioValue = 2;
-      }
-      if (obj.rate === 3) {
-        tmpRadioValue = 3;
-      }
-      if (obj.rate === 1) {
-        tmpRadioValue = 4;
-      }
-    }
-    setRadioValue(tmpRadioValue);
+    setTextAreaValue(obj.comment);
+    setRadioValue(obj.rating);
   };
 
   const handleUpdate = () => {
-    if (radioValue === 0) {
+    if (radioValue === undefined) {
       dispatch({
         type: 'page/postUn',
         payload: {
@@ -181,25 +173,15 @@ const App = (props: AppPropsType) => {
         },
         callback: handledCallback,
       });
-    } else if (radioValue === 1) {
+    } else if (radioValue === 0) {
       handlePostOut(tmpObj.id);
     } else {
-      let tmpRate;
-      if (radioValue === 2) {
-        tmpRate = 5;
-      }
-      if (radioValue === 3) {
-        tmpRate = 3;
-      }
-      if (radioValue === 4) {
-        tmpRate = 1;
-      }
       dispatch({
         type: 'page/postEdit',
         payload: {
           id: tmpObj.id,
-          rate: tmpRate,
-          evaluate: textAreaValue,
+          rating: radioValue,
+          comment: textAreaValue,
         },
         callback: handledCallback,
       });
@@ -218,45 +200,48 @@ const App = (props: AppPropsType) => {
   const renderEditBox = () => {
     let tmp: any;
     if (tmpObj) {
-      if (tmpObj.un) {
+      if (tmpObj.rating === undefined) {
         tmp = <div className={`${HBEditBox}-top-un`}>未评</div>;
-      } else if (tmpObj.out) {
+      } else if (tmpObj.rating === 0) {
         tmp = <div className={`${HBEditBox}-top-out`}>淘汰</div>;
       } else {
         tmp = (
           <div className={`${HBEditBox}-top-rate`}>
-            <Rate value={tmpObj.rate} disabled={true} />
+            <Rate value={tmpObj.rating} disabled={true} />
           </div>
         );
       }
     }
 
     if (editing) {
+      const { user } = tmpObj;
+      const { avatar, username } = user;
+
       return (
         <div className={`${HBEditBox}-wrap`} onClick={closeEditBox}>
           <Icon className={`${HBEditBox}-close`} type='close' />
           <div className={`${HBEditBox}`} onClick={stopPropagation}>
             <div className={`${HBEditBox}-top`}>
               <div className={`${HBEditBox}-top-title`}>{tmpObj && tmpObj.title}</div>
-              <div className={`${HBEditBox}-top-des`}>{tmpObj && tmpObj.works[0].des}</div>
+              <div className={`${HBEditBox}-top-des`}>{tmpObj && tmpObj.desc}</div>
               <div className={`${HBEditBox}-top-avatar`}>
-                <img src={tmpObj && tmpObj.avatarUrl} alt='avatar' />
+                <img src={avatar && `//${avatar.bucket}.huabanimg.com/${avatar.key}_sq140sf`} alt='avatar' />
               </div>
-              <div className={`${HBEditBox}-top-username`}>{tmpObj && tmpObj.username}</div>
+              <div className={`${HBEditBox}-top-username`}>{username}</div>
               <div className={`${HBEditBox}-top-e`}>作品评级</div>
               {tmp}
             </div>
             <div className={`${HBEditBox}-left clearfix`}>
               {tmpObj &&
-                tmpObj.works &&
-                tmpObj.works.map((work: any, index: number) => {
+                tmpObj.pins &&
+                tmpObj.pins.map((pin: any, index: number) => {
                   return (
                     <div key={index.toString()} className={`${HBEditBox}-left-item clearfix`}>
                       <div className={`${HBEditBox}-work`}>
-                        <img src={work.cover} alt={'work'} />
+                        <img src={pin && pin.file && pin.file.url} alt={'work'} />
                       </div>
                       <p className={`${HBEditBox}-left-item-des`}>
-                        {work.des}
+                        {pin && pin.raw_text}
                         {index === 1 && '描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述'}
                       </p>
                     </div>
@@ -266,19 +251,25 @@ const App = (props: AppPropsType) => {
             <div className={`${HBEditBox}-sidebar`}>
               <div className={`${HBEditBox}-sidebar-title`}>作品评级</div>
               <Radio.Group onChange={onRadioChange} value={radioValue}>
-                <Radio className={`${HBEditBox}-radio ${HBEditBox}-radio0`} value={0}>
+                <Radio className={`${HBEditBox}-radio ${HBEditBox}-radio0`} value={undefined}>
                   未评
                 </Radio>
-                <Radio className={`${HBEditBox}-radio ${HBEditBox}-radio1`} value={1}>
+                <Radio className={`${HBEditBox}-radio ${HBEditBox}-radio1`} value={0}>
                   淘汰
                 </Radio>
-                <Radio className={`${HBEditBox}-radio ${HBEditBox}-radio2`} value={2} disabled={rate5Count === rate5Max}>
+                <Radio className={`${HBEditBox}-radio ${HBEditBox}-radio2`} value={5} disabled={rate5Count === rate5Max}>
                   5星(已选{rate5Count}/总{rate5Max})
                 </Radio>
-                <Radio className={`${HBEditBox}-radio ${HBEditBox}-radio3`} value={3} disabled={rate3Count === rate3Max}>
+                <Radio className={`${HBEditBox}-radio ${HBEditBox}-radio3`} value={4} disabled={rate4Count === rate4Max}>
+                  4星(已选{rate4Count}/总{rate4Max})
+                </Radio>
+                <Radio className={`${HBEditBox}-radio ${HBEditBox}-radio4`} value={3} disabled={rate3Count === rate3Max}>
                   3星(已选{rate3Count}/总{rate3Max})
                 </Radio>
-                <Radio className={`${HBEditBox}-radio ${HBEditBox}-radio4`} value={4} disabled={rate1Count === rate1Max}>
+                <Radio className={`${HBEditBox}-radio ${HBEditBox}-radio5`} value={2} disabled={rate2Count === rate2Max}>
+                  2星(已选{rate2Count}/总{rate2Max})
+                </Radio>
+                <Radio className={`${HBEditBox}-radio ${HBEditBox}-radio6`} value={1} disabled={rate1Count === rate1Max}>
                   1星(已选{rate1Count}/总{rate1Max})
                 </Radio>
               </Radio.Group>
@@ -297,28 +288,30 @@ const App = (props: AppPropsType) => {
   };
 
   useEffect(() => {
-    if (category === 0) {
+    if (category === 'all') {
       setCurrentTotal(totalCount);
     }
-    if (category === 1) {
+    if (category === '5') {
       setCurrentTotal(rate5Count);
     }
-    if (category === 2) {
+    if (category === '3') {
       setCurrentTotal(rate3Count);
     }
-    if (category === 3) {
+    if (category === '1') {
       setCurrentTotal(rate1Count);
     }
-    if (category === 4) {
+    if (category === 'unrate') {
       setCurrentTotal(unCount);
     }
-    if (category === 5) {
+    if (category === '0') {
       setCurrentTotal(outCount);
     }
   }, [category, outCount, rate1Count, rate3Count, rate5Count, totalCount, unCount]);
 
   useEffect(() => {
+    console.log('e1');
     if (currentPage > Math.ceil(currentTotal / perPageLimit)) {
+      console.log('e2');
       setCurrentPage(1);
       dispatch({
         type: 'page/fetch',
@@ -340,90 +333,27 @@ const App = (props: AppPropsType) => {
     }
   }, [editing]);
 
-  const rate5Arr = rate5list.slice(0, 5);
-  const count5Set = 5;
-  let blankArr5 = Object.keys(Array.from({ length: count5Set - rate5Arr.length }));
-  const rate3Arr = rate3list.slice(rate3Offset, 5 + rate3Offset);
-  const count3Set = 5;
-  let blankArr3 = Object.keys(Array.from({ length: count3Set - rate3Arr.length }));
-  const rate1Arr = rate1list.slice(rate1Offset, 5 + rate1Offset);
-  const count1Set = 5;
-  let blankArr1 = Object.keys(Array.from({ length: count1Set - rate1Arr.length }));
+  const renderRateGroups = () => {
+    let RateGroupArr = [];
 
-  const renderRateGroups = () => (
-    <>
-      <div className={`${HB}-rate-group`}>
-        {/* <Rate disabled={true} defaultValue={5} /> */}
-        <div className={`${HB}-rate ${HB}-rate-5`} />
-        <div className={`${HB}-rate-title`}>
-          5星作品
-          <span>
-            (已选{rate5list.length}件总共{rate5Max}件)
-          </span>
-        </div>
-        <div className={`${HB}-scards-wrap clearfix`}>
-          {/* <div className='row clearfix' style={{ width: `${rate5Arr.length > 0 ? rate5Arr.length * 236 + (rate5Arr.length - 1) * 16 : 0}px` }}> */}
-          <div className='row clearfix' style={{ width: `${count5Set * 236 + (count5Set - 1) * 16}px` }}>
-            {rate5Arr.map((v: any, i: number) => {
-              return <SCard key={i.toString()} handleEdit={openEditBox} {...v} />;
-            })}
-            {blankArr5.length > 0 &&
-              blankArr5.map((_: any, index: number) => {
-                return <SCardBlank key={index.toString()} />;
-              })}
-          </div>
-        </div>
-      </div>
+    if (rate5Max > 0) {
+      RateGroupArr.push(<RateGroup key={'rate-group-5'} list={rate5List} max={rate5Max} typeTag={'5'} openEditBox={openEditBox} />);
+    }
+    if (rate4Max > 0) {
+      RateGroupArr.push(<RateGroup list={rate4List} max={rate4Max} typeTag={'5'} openEditBox={openEditBox} />);
+    }
+    if (rate3Max > 0) {
+      RateGroupArr.push(<RateGroup key={'rate-group-3'} list={rate3List} max={rate3Max} typeTag={'3'} openEditBox={openEditBox} />);
+    }
+    if (rate2Max > 0) {
+      RateGroupArr.push(<RateGroup list={rate2List} max={rate2Max} typeTag={'5'} openEditBox={openEditBox} />);
+    }
+    if (rate1Max > 0) {
+      RateGroupArr.push(<RateGroup key={'rate-group-1'} list={rate1List} max={rate1Max} typeTag={'1'} openEditBox={openEditBox} />);
+    }
 
-      <div className={`${HB}-rate-group`}>
-        <div className={`${HB}-rate ${HB}-rate-3`} />
-        <div className={`${HB}-rate-title`}>
-          3星作品
-          <span>
-            (已选{rate3list.length}件总共{rate3Max}件)
-          </span>
-        </div>
-        <div className={`${HB}-scards-wrap clearfix`}>
-          {/* <div className='row clearfix' style={{ width: `${rate3Arr.length > 0 ? rate3Arr.length * 236 + (rate3Arr.length - 1) * 16 : 0}px` }}> */}
-          <div className='row clearfix' style={{ width: `${count3Set * 236 + (count3Set - 1) * 16}px` }}>
-            {rate3Arr.map((v: any, i: number) => {
-              return <SCard key={i.toString()} handleEdit={openEditBox} {...v} />;
-            })}
-            {blankArr3.length > 0 &&
-              blankArr3.map((_: any, index: number) => {
-                return <SCardBlank key={index.toString()} />;
-              })}
-          </div>
-          <div className={`${HB}-rate-group-l${rate3Offset > 0 ? '' : ' disabled'}`} onClick={handleRate3OffsetL} />
-          <div className={`${HB}-rate-group-r${5 + rate3Offset < rate3list.length ? '' : ' disabled'}`} onClick={handleRate3OffsetR} />
-        </div>
-      </div>
-
-      <div className={`${HB}-rate-group`}>
-        <div className={`${HB}-rate ${HB}-rate-1`} />
-        <div className={`${HB}-rate-title`}>
-          1星作品
-          <span>
-            (已选{rate1list.length}件总共{rate1Max}件)
-          </span>
-        </div>
-        <div className={`${HB}-scards-wrap clearfix`}>
-          {/* <div className='row clearfix' style={{ width: `${rate3Arr.length > 0 ? rate3Arr.length * 236 + (rate3Arr.length - 1) * 16 : 0}px` }}> */}
-          <div className='row clearfix' style={{ width: `${count1Set * 236 + (count1Set - 1) * 16}px` }}>
-            {rate1Arr.map((v: any, i: number) => {
-              return <SCard key={i.toString()} handleEdit={openEditBox} {...v} />;
-            })}
-            {blankArr1.length > 0 &&
-              blankArr1.map((_: any, index: number) => {
-                return <SCardBlank key={index.toString()} />;
-              })}
-          </div>
-          <div className={`${HB}-rate-group-l${rate1Offset > 0 ? '' : ' disabled'}`} onClick={handleRate1OffsetL} />
-          <div className={`${HB}-rate-group-r${5 + rate1Offset < rate1list.length ? '' : ' disabled'}`} onClick={handleRate1OffsetR} />
-        </div>
-      </div>
-    </>
-  );
+    return <>{RateGroupArr.map(i => i)}</>;
+  };
 
   if (!ifLogin) {
     return (
@@ -452,13 +382,15 @@ const App = (props: AppPropsType) => {
               {tabArr &&
                 tabArr.map((item, index) => {
                   return (
-                    <li key={index.toString()} className={index === category ? 'active' : ''} onClick={() => handleTab(index)}>
-                      {item}({index === 0 && totalCount}
-                      {index === 1 && rate5Count}
-                      {index === 2 && rate3Count}
-                      {index === 3 && rate1Count}
-                      {index === 4 && unCount}
-                      {index === 5 && outCount})
+                    <li key={index.toString()} className={item.category === category ? 'active' : ''} onClick={() => handleTab(item.category)}>
+                      {item.title}({item.category === 'all' && totalCount}
+                      {item.category === '5' && rate5Count}
+                      {item.category === '4' && rate4Count}
+                      {item.category === '3' && rate3Count}
+                      {item.category === '2' && rate2Count}
+                      {item.category === '1' && rate1Count}
+                      {item.category === 'unrate' && unCount}
+                      {item.category === '0' && outCount})
                     </li>
                   );
                 })}
