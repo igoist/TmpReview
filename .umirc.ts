@@ -21,11 +21,20 @@ const config: IConfig = {
       },
     ],
   ],
+  // proxy: {
+  //   '/api': {
+  //     target: 'http://event64.huaban.com/',
+  //     changeOrigin: true,
+  //     pathRewrite: { '': '' },
+  //   },
+  // },
   alias: {
     '@Components': path.resolve(__dirname, 'src/components'),
     '@Services': path.resolve(__dirname, 'src/services'),
     '@Utils': path.resolve(__dirname, 'src/utils'),
   },
+  outputPath: 'dist/audit/',
+  publicPath: '/audit/',
 };
 
 export default config;

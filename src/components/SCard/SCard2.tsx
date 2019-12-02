@@ -72,7 +72,7 @@ const SCard2 = (props: any) => {
         <div className={`${HBScard}-title`}>{title}</div>
         <div className={`${HBScard}-extra-wrap`}>
           <div className={`${HBScard}-des`}>{desc}</div>
-          <div className={`${HBScard}-avatar`} style={{ backgroundImage: `url(//${avatar.bucket}.huabanimg.com/${avatar.key}_sq140sf)` }} />
+          <div className={`${HBScard}-avatar`} style={{ backgroundImage: `url(${avatar.url})` }} />
           <div className={`${HBScard}-username`}>{username}</div>
           <div className={`${HBScard}-special`}>{renderSpecial()}</div>
         </div>

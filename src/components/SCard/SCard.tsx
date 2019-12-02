@@ -27,7 +27,8 @@ const SCard = (props: any) => {
       <div className={`${HBScard}-body`}>
         <div className={`${HBScard}-extra-wrap`}>
           <div className={`${HBScard}-title`}>{title}</div>
-          <div className={`${HBScard}-avatar`} style={{ backgroundImage: `url(//${avatar.bucket}.huabanimg.com/${avatar.key}_sq140sf)` }} />
+          {/* <div className={`${HBScard}-avatar`} style={{ backgroundImage: `url(//${avatar.bucket}.huabanimg.com/${avatar.key}_sq140sf)` }} /> */}
+          <div className={`${HBScard}-avatar`} style={{ backgroundImage: `url(${avatar.url})` }} />
           <div className={`${HBScard}-username`}>{username}</div>
         </div>
         <div className={`${HBScard}-evaluate`}>{comment.slice(0, 44) + (comment.length > 44 ? '...' : '')}</div>

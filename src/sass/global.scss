@@ -177,9 +177,19 @@ $HBBanner: $HB + '-banner';
       width: 268px;
       background-image: url(assets/rate5.svg);
     }
+    .#{$HB}-rate-4 {
+      width: 245px;
+      background-image: url(assets/rate1.svg);
+      background-repeat: repeat;
+    }
     .#{$HB}-rate-3 {
       width: 160px;
       background-image: url(assets/rate3.svg);
+    }
+    .#{$HB}-rate-2 {
+      width: 118px;
+      background-image: url(assets/rate1.svg);
+      background-repeat: repeat;
     }
     .#{$HB}-rate-1 {
       width: 54px;
@@ -505,6 +515,7 @@ $HBScardBlank: $HB + '-scard-blank';
     position: absolute;
     top: 38px;
     left: 12px;
+    border-radius: 16px;
     width: 32px;
     height: 32px;
     background-size: 32px;

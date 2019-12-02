@@ -225,7 +225,8 @@ const App = (props: AppPropsType) => {
               <div className={`${HBEditBox}-top-title`}>{tmpObj && tmpObj.title}</div>
               <div className={`${HBEditBox}-top-des`}>{tmpObj && tmpObj.desc}</div>
               <div className={`${HBEditBox}-top-avatar`}>
-                <img src={avatar && `//${avatar.bucket}.huabanimg.com/${avatar.key}_sq140sf`} alt='avatar' />
+                {/* <img src={avatar && `//${avatar.bucket}.huabanimg.com/${avatar.key}_sq140sf`} alt='avatar' /> */}
+                <img src={avatar && `${avatar.url}`} alt='avatar' />
               </div>
               <div className={`${HBEditBox}-top-username`}>{username}</div>
               <div className={`${HBEditBox}-top-e`}>作品评级</div>
@@ -352,13 +353,13 @@ const App = (props: AppPropsType) => {
       RateGroupArr.push(<RateGroup key={'rate-group-5'} list={rate5List} max={rate5Max} typeTag={'5'} openEditBox={openEditBox} />);
     }
     if (rate4Max > 0) {
-      RateGroupArr.push(<RateGroup list={rate4List} max={rate4Max} typeTag={'5'} openEditBox={openEditBox} />);
+      RateGroupArr.push(<RateGroup list={rate4List} max={rate4Max} typeTag={'4'} openEditBox={openEditBox} />);
     }
     if (rate3Max > 0) {
       RateGroupArr.push(<RateGroup key={'rate-group-3'} list={rate3List} max={rate3Max} typeTag={'3'} openEditBox={openEditBox} />);
     }
     if (rate2Max > 0) {
-      RateGroupArr.push(<RateGroup list={rate2List} max={rate2Max} typeTag={'5'} openEditBox={openEditBox} />);
+      RateGroupArr.push(<RateGroup list={rate2List} max={rate2Max} typeTag={'2'} openEditBox={openEditBox} />);
     }
     if (rate1Max > 0) {
       RateGroupArr.push(<RateGroup key={'rate-group-1'} list={rate1List} max={rate1Max} typeTag={'1'} openEditBox={openEditBox} />);
