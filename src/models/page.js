@@ -28,9 +28,7 @@ const handleDataAll = config => {
     unrate: worksUn,
   };
 
-  console.log('herh: ', nameMap);
   list = nameMap[rating] && nameMap[rating].slice((page - 1) * limit, page * limit);
-  console.log('herh2: ');
 
   return {
     // totalCount: facet.all,
@@ -147,16 +145,19 @@ export default {
       // }
     },
     *postUn({ type, payload, callback }, { put, call, select }) {
+      const ss = yield select(state => state);
+      const { login } = ss;
       const { id } = payload;
-      const res = yield postUrl(`/api/works/un`, { id });
-      console.log('here /api/works/un: ', res);
-      if (res && res.status === 200) {
-        message.success('更改成功');
+      // const res = yield postUrl(`/api/works/un`, { id });
+      const res = yield postUrl(`/invite/${login.password}/api/unvote/work/${id}`, {});
+      console.log('here unvote: ', res);
+      message.success('更改成功');
 
-        if (callback) {
-          callback();
-        }
+      if (callback) {
+        callback();
       }
+      // if (res && res.status === 200) {
+      // }
     },
     *postOutBatch({ type, payload, callback }, { put, call, select }) {
       const ss = yield select(state => state);
@@ -176,13 +177,13 @@ export default {
       // const res = yield postBatch(`/api/works/out/batch`, { ids: tmpArr });
       const res = yield postBatch(`/invite/${login.password}/api/vote/works/`, { ids: tmpArr });
       console.log('here postOut: ', res);
-      if (res && res.status === 200) {
-        message.success('批量淘汰成功');
+      message.success('批量淘汰成功');
 
-        if (callback) {
-          callback();
-        }
+      if (callback) {
+        callback();
       }
+      // if (res && res.status === 200) {
+      // }
     },
     *postEdit({ type, payload, callback }, { put, call, select }) {
       const ss = yield select(state => state);
@@ -191,17 +192,17 @@ export default {
       // const res = yield postUrl(`/api/works/edit`, { id, rating, comment });
       const res = yield postUrl(`/invite/${login.password}/api/vote/work/${id}`, { rating, comment });
       console.log('here postEdit: ', res);
-      if (res && res.status === 200) {
-        if (rating === 0) {
-          message.success('淘汰成功');
-        } else {
-          message.success('更改成功');
-        }
-
-        if (callback) {
-          callback();
-        }
+      if (rating === 0) {
+        message.success('淘汰成功');
+      } else {
+        message.success('更改成功');
       }
+
+      if (callback) {
+        callback();
+      }
+      // if (res && res.status === 200) {
+      // }
     },
   },
 };
