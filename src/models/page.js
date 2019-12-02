@@ -82,16 +82,16 @@ export default {
   },
   subscriptions: {
     setup({ dispatch, history }) {
-      return history.listen(({ pathname, query }) => {
-        dispatch({
-          type: 'fetch',
-          payload: {
-            category: 'all',
-            page: 1,
-            limit: 999,
-          },
-        });
-      });
+      // return history.listen(({ pathname, query }) => {
+      //   dispatch({
+      //     type: 'fetch',
+      //     payload: {
+      //       category: 'all',
+      //       page: 1,
+      //       limit: 999,
+      //     },
+      //   });
+      // });
     },
   },
   reducers: {

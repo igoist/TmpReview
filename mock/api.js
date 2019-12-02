@@ -1,6 +1,15 @@
 var cardMock = {
   id: 0,
   title: '作品标题作品标题',
+  desc: '我是小刺猬木木，是一枚烧烤美食探索家，很高兴认识大家！',
+  banner: {
+    id: 3862,
+    width: 2480,
+    height: 2779,
+    createdAt: '2019-11-12T03:35:22.000Z',
+    updatedAt: '2019-11-12T03:35:22.000Z',
+    url: '//hbimg.huabanimg.com/67806f9da7eceda8fa4e7b66838e9f0fd6faf48c',
+  },
   works: [
     {
       cover: '//hbfile.huabanimg.com/1b8e4986034aec8113b862e99a26ff8854b8979f',
@@ -11,9 +20,44 @@ var cardMock = {
       des: '描述描述描述描述描述描述描述描述描述描述描述描述',
     },
   ],
-  avatarUrl: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-  username: '用户名',
-  evaluate: '评语评语评语评语评语评语评语评语评语评语评语评语',
+  pins: [
+    {
+      file: {
+        url: '//hbimg.huabanimg.com/b400e9baebca1d7423f2d760f6b0269c2bc9c15a1f4606-kQpykn',
+      },
+      raw_text: '木屋烧烤吉祥物设计“木木”效果展示',
+    },
+    {
+      file: {
+        url: '//hbimg.huabanimg.com/8ece983c51b881059749dc814387ccc1bbb4597752c146-XsSHbD',
+      },
+      raw_text:
+        '小刺猬木木是一名烧烤美食探索家，他最爱制作和品尝烧烤，对食材的要求非常高，常常到野外去寻觅自然新鲜的食材。而且不管去到哪儿他都会将自己亲手打造的木屋房子戴在头上，对他来说，“有木屋的地方就是家”。木木热情豪爽，乐观开朗，喜欢结交朋友，他将收集的食材做成色香味俱佳的烧烤，和朋友们欢聚一堂，把酒畅嗨，举杯相庆。所谓“欢聚时光在木屋”，木木的人生格言就是：每一天，都值得庆祝!',
+    },
+    {
+      file: {
+        url: '//hbimg.huabanimg.com/5bbbfdcdc481bdf198543fe3983bf4ecece4673afe0f-eM89DL',
+      },
+      raw_text: '',
+    },
+  ],
+  user: {
+    username: '【Aigil】',
+    avatar: {
+      id: 257115032,
+      farm: 'farm1',
+      bucket: 'hbimg',
+      key: '104f1e8eac7635304bf93cc0ec22abb79e8d0dc81452-7ya6Yw',
+      type: 'image/jpeg',
+      height: 132,
+      width: 132,
+      frames: 1,
+    },
+  },
+  // avatarUrl: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+  // username: '用户名',
+  // comment: '评语评语评语评语评语评语评语评语评语评语评语评语',
+  comment: '',
 };
 
 let worksMock = [];
@@ -25,6 +69,8 @@ for (let i = 0; i < 212; i++) {
   // }
   worksMock.push({ ...cardMock, id: i + 1 });
 }
+
+const hash = '2083dc35-79ec-430c-a96b-6054ec15c991';
 
 export default {
   'POST /api/login': (req, res) => {
@@ -42,13 +88,13 @@ export default {
       status: result,
     });
   },
-  'GET /api/works': (req, res) => {
+  // 'GET /api/works': (req, res) => {
+  'GET /invite/2083dc35-79ec-430c-a96b-6054ec15c991/api/vote/works': (req, res) => {
     console.log('GET /api/works');
-    let { category, limit, page } = req.query;
-    // let category = req.query && req.query.category;
+    let { rating, limit, page } = req.query;
+    // let rating = req.query && req.query.rating;
     // let limit = req.query && req.query.limit;
     // let page = req.query && req.query.page;
-    category = parseInt(category);
     limit = parseInt(limit);
     page = parseInt(page);
     console.log('req.query: ', req && req.query);
@@ -62,11 +108,11 @@ export default {
       rate1Max: 50,
     };
     let worksAll = worksMock;
-    let worksRate5 = worksMock.filter(work => work.rate === 5);
-    let worksRate3 = worksMock.filter(work => work.rate === 3);
-    let worksRate1 = worksMock.filter(work => work.rate === 1);
-    let worksUn = worksMock.filter(work => work.rate === undefined);
-    let worksOut = worksMock.filter(work => work.rate === 0);
+    let worksRate5 = worksMock.filter(work => work.rating === 5);
+    let worksRate3 = worksMock.filter(work => work.rating === 3);
+    let worksRate1 = worksMock.filter(work => work.rating === 1);
+    let worksUn = worksMock.filter(work => work.rating === undefined);
+    let worksOut = worksMock.filter(work => work.rating === 0);
     result.totalCount = worksAll.length;
     result.rate5Count = worksRate5.length;
     result.rate3Count = worksRate3.length;
@@ -76,30 +122,38 @@ export default {
     result.rate5List = worksRate5;
     result.rate3List = worksRate3;
     result.rate1List = worksRate1;
-    switch (category) {
-      case 0:
+    switch (rating) {
+      case 'all':
+        console.log('enter: ', rating);
         result.works = worksAll.slice((page - 1) * limit, page * limit);
         break;
-      case 1:
+      case '5':
         result.works = worksRate5.slice((page - 1) * limit, page * limit);
         break;
-      case 2:
+      case '3':
         result.works = worksRate3.slice((page - 1) * limit, page * limit);
         break;
-      case 3:
+      case '1':
         result.works = worksRate1.slice((page - 1) * limit, page * limit);
         break;
-      case 4:
+      case 'unrate':
         result.works = worksUn.slice((page - 1) * limit, page * limit);
         break;
-      case 5:
+      case '0':
         result.works = worksOut.slice((page - 1) * limit, page * limit);
         break;
       default:
         break;
     }
 
-    res.send(result);
+    let result2 = {
+      works: {
+        pager: {},
+        hits: worksMock,
+      },
+    };
+
+    res.send(result2);
   },
   'POST /api/works/un': (req, res) => {
     console.log('POST /api/works/un: ', req.body);
@@ -110,7 +164,7 @@ export default {
 
     for (let i = 0; i < worksMock.length; i++) {
       if (worksMock[i].id === id) {
-        worksMock[i].rate = null;
+        worksMock[i].rating = undefined;
         worksMock[i].evaluate = '';
         flag = 200;
         break;
@@ -132,7 +186,7 @@ export default {
 
     for (let i = 0; i < worksMock.length; i++) {
       if (worksMock[i].id === id) {
-        worksMock[i].rate = 0;
+        worksMock[i].rating = 0;
         flag = 200;
         break;
       }
@@ -144,8 +198,8 @@ export default {
       status: flag,
     });
   },
-  'POST /api/works/out/batch': (req, res) => {
-    console.log('POST /api/works/out/batch: ', req.body);
+  'POST /invite/2083dc35-79ec-430c-a96b-6054ec15c991/api/vote/works': (req, res) => {
+    console.log('POST /invite/2083dc35-79ec-430c-a96b-6054ec15c991/api/vote/works: ', req.body);
 
     const { ids } = req.body;
 
@@ -157,7 +211,7 @@ export default {
     for (let j = 0; j < ids.length; j++) {
       for (let i = 0; i < worksMock.length; i++) {
         if (worksMock[i].id === ids[j]) {
-          worksMock[i].rate = 0;
+          worksMock[i].rating = 0;
           break;
         }
       }
@@ -172,19 +226,25 @@ export default {
       status: flag,
     });
   },
-  'POST /api/works/edit': (req, res) => {
-    console.log('POST /api/works/edit: ', req.body);
-
-    const { id, rate, evaluate } = req.body;
+  'POST /invite/2083dc35-79ec-430c-a96b-6054ec15c991/api/vote/work/:id': (req, res) => {
+    // 'POST /api/works/edit': (req, res) => {
+    let { id } = req.params;
+    console.log(`POST /invite/2083dc35-79ec-430c-a96b-6054ec15c991/api/vote/work/${id}`, req.body, req.params);
+    id = parseInt(id);
+    const { rating, comment } = req.body;
 
     let flag = 300;
 
     for (let i = 0; i < worksMock.length; i++) {
       if (worksMock[i].id === id) {
-        worksMock[i].rate = rate;
-        worksMock[i].evaluate = evaluate;
-        worksMock[i].un = false;
-        worksMock[i].out = false;
+        worksMock[i].rating = rating;
+        if (rating !== 0) {
+          worksMock[i].comment = comment;
+          console.log('POST /api/works/edit: ', req.body);
+        } else {
+          console.log('POST /api/works/out: ', req.body);
+        }
+
         flag = 200;
         break;
       }

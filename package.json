@@ -2,6 +2,8 @@
   "private": true,
   "scripts": {
     "start": "umi dev",
+    "sass": "sass src/sass/global.scss:src/global.css",
+    "prebuild": "sass src/sass/global.scss:src/global.css",
     "build": "umi build",
     "test": "umi test",
     "lint:es": "eslint --ext .js src mock tests",
@@ -29,6 +31,7 @@
     "husky": "^0.14.3",
     "lint-staged": "^7.2.2",
     "react-test-renderer": "^16.7.0",
+    "sass": "^1.23.7",
     "tslint": "^5.12.0",
     "tslint-eslint-rules": "^5.4.0",
     "tslint-react": "^3.6.0",
