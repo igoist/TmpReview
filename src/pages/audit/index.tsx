@@ -476,7 +476,9 @@ const App = (props: AppPropsType) => {
                 })}
             </ul>
 
-            <div className={`${HB}-tab-batch-btn`} onClick={handlePostOutBatch} />
+            <div className={`${HB}-tab-batch-btn`} onClick={handlePostOutBatch}>
+              批量淘汰本页作品
+            </div>
           </div>
 
           <div className={`${HB}-scards-wrap-outer clearfix`}>

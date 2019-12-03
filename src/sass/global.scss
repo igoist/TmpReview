@@ -582,12 +582,14 @@ $HBScardBlank: $HB + '-scard-blank';
 
   .#{$HB}-tab-batch-btn {
     position: fixed;
+    padding: 0 16px;
     bottom: 135px;
     right: 100px;
     border-radius: 16px;
-    width: 32px;
     height: 32px;
+    line-height: 32px;
     background-color: #333;
+    font-size: 12px;
     transition: transform 0.24s ease-in-out;
     cursor: pointer;
     z-index: 999;
@@ -600,11 +602,12 @@ $HBScardBlank: $HB + '-scard-blank';
       position: absolute;
       top: 6px;
       left: 6px;
+      right: 6px;
       content: '';
       border-radius: 10px;
-      width: 20px;
       height: 20px;
       background-color: #fff;
+      z-index: -1;
     }
   }
 }
