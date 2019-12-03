@@ -2,7 +2,7 @@ import { requestUrl, postUrl, postBatch } from '@Services/api';
 import { message } from 'antd';
 
 const handleData = config => {
-  const { resRated, resFacet, resList, rating, page, limit } = config;
+  const { resRated, resFacet, resList } = config;
 
   if (!resList || !resList.works) {
     throw new Error('SS');
@@ -17,16 +17,6 @@ const handleData = config => {
   let rate3List = hits.filter(work => work.rating === 3);
   let rate2List = hits.filter(work => work.rating === 2);
   let rate1List = hits.filter(work => work.rating === 1);
-
-  const nameMap = {
-    '5': rate5List,
-    '4': rate4List,
-    '3': rate3List,
-    '2': rate2List,
-    '1': rate1List,
-  };
-
-  list = nameMap[rating] && nameMap[rating].slice((page - 1) * limit, page * limit);
 
   return {
     totalCount: facet.all,
@@ -168,9 +158,6 @@ export default {
         resRated,
         resFacet,
         resList,
-        rating: category,
-        page,
-        limit,
       });
 
       yield put({
