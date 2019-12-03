@@ -152,7 +152,6 @@ export default {
       let resRated = yield requestUrl(`/invite/${login.password}/api/vote/works?rating=${'rated'}&limit=${999}&page=${1}`);
       let resFacet = yield requestUrl(`/invite/${login.password}/api/vote/works?rating=${'all'}&limit=${0}&page=${1}`);
       let resList = yield requestUrl(`/invite/${login.password}/api/vote/works?rating=${category}&limit=${limit}&page=${page}`);
-      console.log('page fetch: ', res);
 
       const res = handleData({
         resRated,
