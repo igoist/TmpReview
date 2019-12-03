@@ -31,7 +31,11 @@ const SCard = (props: any) => {
           <div className={`${HBScard}-avatar`} style={{ backgroundImage: `url(${avatar.url})` }} />
           <div className={`${HBScard}-username`}>{username}</div>
         </div>
-        <div className={`${HBScard}-evaluate`}>{comment && comment.slice(0, 44) + (comment.length > 44 ? '...' : '')}</div>
+        {comment === undefined || comment === null || comment === '' ? (
+          <div className={`${HBScard}-evaluate-null`}>请填写评语</div>
+        ) : (
+          <div className={`${HBScard}-evaluate`}>{comment && comment.slice(0, 52) + (comment.length > 52 ? '...' : '')}</div>
+        )}
       </div>
     </div>
   );

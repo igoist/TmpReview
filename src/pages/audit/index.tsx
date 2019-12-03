@@ -15,7 +15,28 @@ type AppPropsType = {
   dispatch: any;
 };
 
-const tabArr = [
+type TabArrItem = {
+  title: string;
+  category: string;
+};
+
+type TabMapItem = {
+  flag: boolean;
+  count: number;
+};
+
+type TabMapType = {
+  all: TabMapItem;
+  '5': TabMapItem;
+  '4': TabMapItem;
+  '3': TabMapItem;
+  '2': TabMapItem;
+  '1': TabMapItem;
+  unrate: TabMapItem;
+  '0': TabMapItem;
+};
+
+const tabArr: Array<TabArrItem> = [
   {
     title: '全部',
     category: 'all',
@@ -25,8 +46,16 @@ const tabArr = [
     category: '5',
   },
   {
+    title: '4星',
+    category: '4',
+  },
+  {
     title: '3星',
     category: '3',
+  },
+  {
+    title: '2星',
+    category: '2',
   },
   {
     title: '1星',
@@ -353,19 +382,54 @@ const App = (props: AppPropsType) => {
       RateGroupArr.push(<RateGroup key={'rate-group-5'} list={rate5List} max={rate5Max} typeTag={'5'} openEditBox={openEditBox} />);
     }
     if (rate4Max > 0) {
-      RateGroupArr.push(<RateGroup list={rate4List} max={rate4Max} typeTag={'4'} openEditBox={openEditBox} />);
+      RateGroupArr.push(<RateGroup key={'rate-group-4'} list={rate4List} max={rate4Max} typeTag={'4'} openEditBox={openEditBox} />);
     }
     if (rate3Max > 0) {
       RateGroupArr.push(<RateGroup key={'rate-group-3'} list={rate3List} max={rate3Max} typeTag={'3'} openEditBox={openEditBox} />);
     }
     if (rate2Max > 0) {
-      RateGroupArr.push(<RateGroup list={rate2List} max={rate2Max} typeTag={'2'} openEditBox={openEditBox} />);
+      RateGroupArr.push(<RateGroup key={'rate-group-2'} list={rate2List} max={rate2Max} typeTag={'2'} openEditBox={openEditBox} />);
     }
     if (rate1Max > 0) {
       RateGroupArr.push(<RateGroup key={'rate-group-1'} list={rate1List} max={rate1Max} typeTag={'1'} openEditBox={openEditBox} />);
     }
 
     return <>{RateGroupArr.map(i => i)}</>;
+  };
+
+  const tabMap: TabMapType = {
+    all: {
+      flag: true,
+      count: totalCount,
+    },
+    '5': {
+      flag: rate5Max > 0,
+      count: rate1Count,
+    },
+    '4': {
+      flag: rate4Max > 0,
+      count: rate4Count,
+    },
+    '3': {
+      flag: rate3Max > 0,
+      count: rate3Count,
+    },
+    '2': {
+      flag: rate2Max > 0,
+      count: rate2Count,
+    },
+    '1': {
+      flag: rate1Max > 0,
+      count: rate1Count,
+    },
+    unrate: {
+      flag: true,
+      count: unCount,
+    },
+    '0': {
+      flag: true,
+      count: outCount,
+    },
   };
 
   if (!ifLogin) {
@@ -394,18 +458,15 @@ const App = (props: AppPropsType) => {
             <ul>
               {tabArr &&
                 tabArr.map((item, index) => {
-                  return (
-                    <li key={index.toString()} className={item.category === category ? 'active' : ''} onClick={() => handleTab(item.category)}>
-                      {item.title}({item.category === 'all' && totalCount}
-                      {item.category === '5' && rate5Count}
-                      {item.category === '4' && rate4Count}
-                      {item.category === '3' && rate3Count}
-                      {item.category === '2' && rate2Count}
-                      {item.category === '1' && rate1Count}
-                      {item.category === 'unrate' && unCount}
-                      {item.category === '0' && outCount})
-                    </li>
-                  );
+                  if ((tabMap as any)[item.category].flag) {
+                    return (
+                      <li key={index.toString()} className={item.category === category ? 'active' : ''} onClick={() => handleTab(item.category)}>
+                        {item.title}({(tabMap as any)[item.category].count})
+                      </li>
+                    );
+                  } else {
+                    return null;
+                  }
                 })}
             </ul>
 

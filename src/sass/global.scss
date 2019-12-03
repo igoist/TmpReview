@@ -264,23 +264,22 @@ $HBScardBlank: $HB + '-scard-blank';
         height: 208px;
       }
 
+      .#{$HBScard}-evaluate-null,
       .#{$HBScard}-evaluate {
         position: absolute;
         top: 88px;
         left: 0;
         padding: 20px 15px;
         width: 236px;
-        height: 120px;
         line-height: 20px;
-        color: #fff;
         font-size: 14px;
-        text-align: left;
 
         &:after,
         &:before {
           position: absolute;
           height: 20px;
           line-height: 20px;
+          color: #999999;
         }
 
         &:before {
@@ -293,6 +292,17 @@ $HBScardBlank: $HB + '-scard-blank';
           bottom: 0;
           right: 15px;
         }
+      }
+
+      .#{$HBScard}-evaluate {
+        height: 120px;
+        color: #fff;
+        text-align: left;
+      }
+      .#{$HBScard}-evaluate-null {
+        height: 60px;
+        color: #999999;
+        text-align: center;
       }
     }
 
