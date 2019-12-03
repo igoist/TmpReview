@@ -8,15 +8,7 @@ export default {
     // password: '2083dc35-79ec-430c-a96b-6054ec15c991',
     password: '',
   },
-  subscriptions: {
-    // setup({ dispatch, history }) {
-    //   return history.listen(({ pathname, query }) => {
-    //     dispatch({
-    //       type: 'fetch',
-    //     });
-    //   });
-    // },
-  },
+  subscriptions: {},
   reducers: {
     save(state, action) {
       return {
@@ -27,18 +19,34 @@ export default {
   },
   effects: {
     *tryLogin({ type, payload }, { put, call, select }) {
-      // const res = yield loginRequest(payload.password);
-      // console.log(res);
+      console.log('enter trylogin');
+      let password = '';
+      let messageFlag = true;
+      if (payload === undefined) {
+        password = localStorage.getItem('HBER');
+        if (!password) {
+          return false;
+        }
+        messageFlag = false;
+      } else {
+        password = payload.password;
+      }
 
-      let res = yield requestUrl(`/invite/${payload.password}/api/vote/works?rating=${'all'}&limit=${20}&page=${1}`);
+      let res = yield requestUrl(`/invite/${password}/api/vote/works?rating=${'all'}&limit=${20}&page=${1}`);
 
       if (res && res.works) {
-        message.success('登录成功');
+        if (!localStorage.getItem('HBER')) {
+          localStorage.setItem('HBER', password);
+        }
+
+        if (messageFlag) {
+          message.success('登录成功');
+        }
         yield put({
           type: 'save',
           payload: {
             ifLogin: true,
-            password: payload.password,
+            password: password,
           },
         });
       } else {

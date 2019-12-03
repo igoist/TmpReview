@@ -375,6 +375,13 @@ const App = (props: AppPropsType) => {
     }
   }, [editing]);
 
+  useEffect(() => {
+    dispatch({
+      type: 'login/tryLogin',
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const renderRateGroups = () => {
     let RateGroupArr = [];
 
