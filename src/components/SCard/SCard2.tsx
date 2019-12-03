@@ -65,14 +65,14 @@ const SCard2 = (props: any) => {
   return (
     <div className={`${HBScard} clearfix`}>
       <div className={`${HBScard}-cover`} onClick={() => handleEdit(p)}>
-        <img alt='example' src={banner.url} />
+        <img alt='example' src={banner.url + '_sq490'} />
         <div className={`${HBScard}-n`}>{pins.length}</div>
       </div>
       <div className={`${HBScard}-body`}>
         <div className={`${HBScard}-title`}>{title}</div>
         <div className={`${HBScard}-extra-wrap`}>
           <div className={`${HBScard}-des`}>{desc}</div>
-          <div className={`${HBScard}-avatar`} style={{ backgroundImage: `url(${avatar.url})` }} />
+          <div className={`${HBScard}-avatar`} style={{ backgroundImage: `url(${avatar.url + '_sq75sf'})` }} />
           <div className={`${HBScard}-username`}>{username}</div>
           <div className={`${HBScard}-special`}>{renderSpecial()}</div>
         </div>

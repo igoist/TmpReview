@@ -47,9 +47,13 @@ $HBEditBox: $HB + '-edit-box';
         position: absolute;
         top: 58px;
         left: 30px;
+        width: 720px;
         height: 22px;
         line-height: 22px;
         font-size: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .#{$HBEditBox}-top-avatar {

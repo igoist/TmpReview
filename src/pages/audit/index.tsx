@@ -252,10 +252,12 @@ const App = (props: AppPropsType) => {
           <div className={`${HBEditBox}`} onClick={stopPropagation}>
             <div className={`${HBEditBox}-top`}>
               <div className={`${HBEditBox}-top-title`}>{tmpObj && tmpObj.title}</div>
-              <div className={`${HBEditBox}-top-des`}>{tmpObj && tmpObj.desc}</div>
+              <div className={`${HBEditBox}-top-des`} title={tmpObj && tmpObj.desc}>
+                {tmpObj && tmpObj.desc}
+              </div>
               <div className={`${HBEditBox}-top-avatar`}>
                 {/* <img src={avatar && `//${avatar.bucket}.huabanimg.com/${avatar.key}_sq140sf`} alt='avatar' /> */}
-                <img src={avatar && `${avatar.url}`} alt='avatar' />
+                <img src={avatar && `${avatar.url + '_sq75sf'}`} alt='avatar' />
               </div>
               <div className={`${HBEditBox}-top-username`}>{username}</div>
               <div className={`${HBEditBox}-top-e`}>作品评级</div>
@@ -268,12 +270,9 @@ const App = (props: AppPropsType) => {
                   return (
                     <div key={index.toString()} className={`${HBEditBox}-left-item clearfix`}>
                       <div className={`${HBEditBox}-work`}>
-                        <img src={pin && pin.file && pin.file.url} alt={'work'} />
+                        <img src={pin && pin.file && pin.file.url + '_fw658'} alt={'work'} />
                       </div>
-                      <p className={`${HBEditBox}-left-item-des`}>
-                        {pin && pin.raw_text}
-                        {index === 1 && '描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述'}
-                      </p>
+                      <p className={`${HBEditBox}-left-item-des`}>{pin && pin.raw_text}</p>
                     </div>
                   );
                 })}
