@@ -411,7 +411,7 @@ const App = (props: AppPropsType) => {
     },
     '5': {
       flag: rate5Max > 0,
-      count: rate1Count,
+      count: rate5Count,
     },
     '4': {
       flag: rate4Max > 0,

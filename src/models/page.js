@@ -113,8 +113,8 @@ export default {
       const category = payload ? payload.category : 0;
       const page = payload ? payload.page : 1;
       const limit = payload ? payload.limit : t.perPageLimit;
-      let res = yield requestUrl(`/invite/${login.password}/api/vote/works?rating=${category}&limit=${limit}&page=${page}`);
-      // let res = yield requestUrl(`/invite/${login.password}/api/vote/works?rating=${'all'}&limit=${999}&page=${1}`);
+      // let res = yield requestUrl(`/invite/${login.password}/api/vote/works?rating=${category}&limit=${limit}&page=${page}`);
+      let res = yield requestUrl(`/invite/${login.password}/api/vote/works?rating=${'all'}&limit=${999}&page=${1}`);
       console.log('page fetch: ', res);
       if (res && res.works) {
         res = handleDataAll({
@@ -175,7 +175,7 @@ export default {
       console.log('postOutBatch: ', tmpArr);
 
       // const res = yield postBatch(`/api/works/out/batch`, { ids: tmpArr });
-      const res = yield postBatch(`/invite/${login.password}/api/vote/works/`, { ids: tmpArr });
+      const res = yield postBatch(`/invite/${login.password}/api/vote/works/`, { ids: tmpArr, rating: '0' });
       console.log('here postOut: ', res);
       message.success('批量淘汰成功');
 

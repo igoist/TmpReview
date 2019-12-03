@@ -164,44 +164,23 @@ export default {
 
     res.send(result2);
   },
-  'POST /api/works/un': (req, res) => {
-    console.log('POST /api/works/un: ', req.body);
-
-    const { id } = req.body;
+  'POST /invite/2083dc35-79ec-430c-a96b-6054ec15c991/api/unvote/work/:id': (req, res) => {
+    let { id } = req.params;
+    console.log(`POST /invite/2083dc35-79ec-430c-a96b-6054ec15c991/api/unvote/work/${id}`, req.body, req.params);
+    id = parseInt(id);
 
     let flag = 300;
 
     for (let i = 0; i < worksMock.length; i++) {
       if (worksMock[i].id === id) {
         worksMock[i].rating = undefined;
-        worksMock[i].evaluate = '';
+        worksMock[i].comment = '';
         flag = 200;
         break;
       }
     }
 
     console.log('POST /api/works/un flag: ', flag);
-
-    res.send({
-      status: flag,
-    });
-  },
-  'POST /api/works/out': (req, res) => {
-    console.log('POST /api/works/out: ', req.body);
-
-    const { id } = req.body;
-
-    let flag = 300;
-
-    for (let i = 0; i < worksMock.length; i++) {
-      if (worksMock[i].id === id) {
-        worksMock[i].rating = 0;
-        flag = 200;
-        break;
-      }
-    }
-
-    console.log('POST /api/works/out flag: ', flag);
 
     res.send({
       status: flag,

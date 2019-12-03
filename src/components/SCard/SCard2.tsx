@@ -49,7 +49,7 @@ const SCard2 = (props: any) => {
       return (
         <>
           <Rate disabled={true} value={rating} />
-          {comment === '' ? (
+          {comment === null || comment === undefined || comment === '' ? (
             <span className={`${HBScard}-span ${HBScard}-span-evaluate-null`}>请添加评语</span>
           ) : (
             <span className={`${HBScard}-span ${HBScard}-span-evaluate`}>{comment}</span>
