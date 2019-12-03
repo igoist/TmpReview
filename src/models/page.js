@@ -1,22 +1,23 @@
 import { requestUrl, postUrl, postBatch } from '@Services/api';
 import { message } from 'antd';
 
-const handleDataAll = config => {
-  const { res, rating, page, limit } = config;
-  const { hits, facet } = res.works;
+const handleData = config => {
+  const { resRated, resFacet, resList } = config;
+
+  if (!resList || !resList.works) {
+    throw new Error('SS');
+  }
+
+  const { hits } = resRated.works;
+  const { facet } = resFacet.works;
+  const list = resList.works.hits;
 
   let rate5List = hits.filter(work => work.rating === 5);
   let rate4List = hits.filter(work => work.rating === 4);
   let rate3List = hits.filter(work => work.rating === 3);
   let rate2List = hits.filter(work => work.rating === 2);
   let rate1List = hits.filter(work => work.rating === 1);
-  let worksOut = hits.filter(work => work.rating === 0);
-  let worksUn = hits.filter(work => work.rating === undefined);
 
-  let list;
-  // const ratingMap = {
-  //   all: {name: "quanbu", listName: 'hits', filterFunc: x => true}
-  // }
   const nameMap = {
     all: hits,
     '5': rate5List,
@@ -31,22 +32,14 @@ const handleDataAll = config => {
   list = nameMap[rating] && nameMap[rating].slice((page - 1) * limit, page * limit);
 
   return {
-    // totalCount: facet.all,
-    // rate5Count: facet[5],
-    // rate4Count: facet[4],
-    // rate3Count: facet[3],
-    // rate2Count: facet[2],
-    // rate1Count: facet[1],
-    // outCount: facet[0],
-    // unCount: facet.unrate,
-    totalCount: hits.length,
-    rate5Count: rate5List.length,
-    rate4Count: rate4List.length,
-    rate3Count: rate3List.length,
-    rate2Count: rate2List.length,
-    rate1Count: rate1List.length,
-    outCount: worksOut.length,
-    unCount: worksUn.length,
+    totalCount: facet.all,
+    rate5Count: facet[5],
+    rate4Count: facet[4],
+    rate3Count: facet[3],
+    rate2Count: facet[2],
+    rate1Count: facet[1],
+    outCount: facet[0],
+    unCount: facet.unrate,
     rate5List,
     rate4List,
     rate3List,
@@ -55,6 +48,61 @@ const handleDataAll = config => {
     list,
   };
 };
+
+// const handleDataAll = config => {
+//   const { res, rating, page, limit } = config;
+//   const { hits, facet } = res.works;
+
+//   let rate5List = hits.filter(work => work.rating === 5);
+//   let rate4List = hits.filter(work => work.rating === 4);
+//   let rate3List = hits.filter(work => work.rating === 3);
+//   let rate2List = hits.filter(work => work.rating === 2);
+//   let rate1List = hits.filter(work => work.rating === 1);
+//   let worksOut = hits.filter(work => work.rating === 0);
+//   let worksUn = hits.filter(work => work.rating === undefined);
+
+//   let list;
+//   // const ratingMap = {
+//   //   all: {name: "quanbu", listName: 'hits', filterFunc: x => true}
+//   // }
+//   const nameMap = {
+//     all: hits,
+//     '5': rate5List,
+//     '4': rate4List,
+//     '3': rate3List,
+//     '2': rate2List,
+//     '1': rate1List,
+//     '0': worksOut,
+//     unrate: worksUn,
+//   };
+
+//   list = nameMap[rating] && nameMap[rating].slice((page - 1) * limit, page * limit);
+
+//   return {
+//     // totalCount: facet.all,
+//     // rate5Count: facet[5],
+//     // rate4Count: facet[4],
+//     // rate3Count: facet[3],
+//     // rate2Count: facet[2],
+//     // rate1Count: facet[1],
+//     // outCount: facet[0],
+//     // unCount: facet.unrate,
+//     totalCount: hits.length,
+//     rate5Count: rate5List.length,
+//     rate4Count: rate4List.length,
+//     rate3Count: rate3List.length,
+//     rate2Count: rate2List.length,
+//     rate1Count: rate1List.length,
+//     outCount: worksOut.length,
+//     unCount: worksUn.length,
+//     rate5List,
+//     rate4List,
+//     rate3List,
+//     rate2List,
+//     rate1List,
+//     list,
+//   };
+// };
 
 export default {
   namespace: 'page',
@@ -113,35 +161,39 @@ export default {
       const category = payload ? payload.category : 0;
       const page = payload ? payload.page : 1;
       const limit = payload ? payload.limit : t.perPageLimit;
-      // let res = yield requestUrl(`/invite/${login.password}/api/vote/works?rating=${category}&limit=${limit}&page=${page}`);
-      let res = yield requestUrl(`/invite/${login.password}/api/vote/works?rating=${'all'}&limit=${999}&page=${1}`);
+      // let res = yield requestUrl(`/invite/${login.password}/api/vote/works?rating=${'all'}&limit=${999}&page=${1}`);
+      let resRated = yield requestUrl(`/invite/${login.password}/api/vote/works?rating=${'rated'}&limit=${999}&page=${1}`);
+      let resFacet = yield requestUrl(`/invite/${login.password}/api/vote/works?rating=${'all'}&limit=${0}&page=${1}`);
+      let resList = yield requestUrl(`/invite/${login.password}/api/vote/works?rating=${category}&limit=${limit}&page=${page}`);
       console.log('page fetch: ', res);
-      if (res && res.works) {
-        res = handleDataAll({
-          res,
-          rating: category,
-          page,
-          limit,
-        });
 
-        yield put({
-          type: 'save',
-          payload: {
-            ...res,
-          },
-        });
-      }
+      const res = handleData({
+        resRated,
+        resFacet,
+        resList,
+      });
 
-      // if (res.status === 200) {
-      //   message.success('登录成功');
+      yield put({
+        type: 'save',
+        payload: {
+          ...res,
+        },
+      });
+
+      // if (res && res.works) {
+      //   res = handleDataAll({
+      //     res,
+      //     rating: category,
+      //     page,
+      //     limit,
+      //   });
+
       //   yield put({
       //     type: 'save',
       //     payload: {
-      //       ifLogin: true,
+      //       ...res,
       //     },
       //   });
-      // } else {
-      //   message.warning('密码错误');
       // }
     },
     *postUn({ type, payload, callback }, { put, call, select }) {

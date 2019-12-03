@@ -32,7 +32,7 @@ export default {
         password = payload.password;
       }
 
-      let res = yield requestUrl(`/invite/${password}/api/vote/works?rating=${'all'}&limit=${20}&page=${1}`);
+      let res = yield requestUrl(`/invite/${password}/api/vote/works?rating=${'all'}&limit=${0}&page=${1}`);
 
       if (res && res.works) {
         if (!localStorage.getItem('HBER')) {
