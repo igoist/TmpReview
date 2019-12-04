@@ -49,7 +49,7 @@ export default {
           payload: {
             ifLogin: true,
             password: password,
-            eventTitle: res.invite.cat,
+            eventTitle: res.event.title,
             currentName: res.invite.name,
             endTime: res.invite.expire,
           },

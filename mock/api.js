@@ -99,6 +99,9 @@ export default {
   },
   'GET /invite/2083dc35-79ec-430c-a96b-6054ec15c991/api/me': (req, res) => {
     let result = {
+      event: {
+        title: 'SSSSSSSSDDDDDDD',
+      },
       invite: {
         // token: '53e5caaa-2482-49a9-af92-aca58823f1ff',
         token: '2083dc35-79ec-430c-a96b-6054ec15c991',

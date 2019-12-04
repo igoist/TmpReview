@@ -344,7 +344,7 @@ const App = (props: AppPropsType) => {
         payload: {
           category: 'all',
           page: 1,
-          limit: 999,
+          limit: perPageLimit,
         },
       });
     }
