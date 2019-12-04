@@ -53,6 +53,12 @@
     background-repeat: no-repeat;
     transform: translateX(-50%);
   }
+
+  .#{$HB}-header-logout {
+    position: absolute;
+    top: 8px;
+    right: 20px;
+  }
 }
 
 $HBBanner: $HB + '-banner';

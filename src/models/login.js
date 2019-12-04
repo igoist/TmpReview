@@ -1,4 +1,3 @@
-// import { loginRequest } from '@Services/api';
 import { requestUrl } from '@Services/api';
 import { message } from 'antd';
 
@@ -7,6 +6,9 @@ export default {
     ifLogin: false,
     // password: '2083dc35-79ec-430c-a96b-6054ec15c991',
     password: '',
+    eventTitle: '',
+    currentName: '',
+    endTime: '',
   },
   subscriptions: {},
   reducers: {
@@ -32,9 +34,9 @@ export default {
         password = payload.password;
       }
 
-      let res = yield requestUrl(`/invite/${password}/api/vote/works?rating=${'all'}&limit=${0}&page=${1}`);
+      let res = yield requestUrl(`/invite/${password}/api/me`);
 
-      if (res && res.works) {
+      if (res && res.invite) {
         if (!localStorage.getItem('HBER')) {
           localStorage.setItem('HBER', password);
         }
@@ -47,11 +49,27 @@ export default {
           payload: {
             ifLogin: true,
             password: password,
+            eventTitle: res.invite.cat,
+            currentName: res.invite.name,
+            endTime: res.invite.expire,
           },
         });
       } else {
         message.warning('密码错误');
       }
+    },
+    *logout({ type, payload }, { put, call, select }) {
+      localStorage.removeItem('HBER');
+      yield put({
+        type: 'save',
+        payload: {
+          ifLogin: false,
+          password: '',
+          eventTitle: '',
+          currentName: '',
+          endTime: '',
+        },
+      });
     },
   },
 };

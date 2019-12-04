@@ -440,7 +440,7 @@ const App = (props: AppPropsType) => {
 
   if (!ifLogin) {
     return (
-      <div className={''}>
+      <div className={''} style={{ marginTop: '-120px' }}>
         <Input
           className={`${HB}-login-input`}
           prefix={<Icon type='lock' style={{ color: 'rgba(0,0,0,.25)' }} />}

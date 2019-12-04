@@ -97,6 +97,22 @@ export default {
       status: result,
     });
   },
+  'GET /invite/2083dc35-79ec-430c-a96b-6054ec15c991/api/me': (req, res) => {
+    let result = {
+      invite: {
+        // token: '53e5caaa-2482-49a9-af92-aca58823f1ff',
+        token: '2083dc35-79ec-430c-a96b-6054ec15c991',
+        name: '张达金',
+        maxNum: 20,
+        cat: '木屋烧烤评审',
+        expire: '2019-12-13T00:00:00.000Z',
+        createdAt: '2019-12-04T02:28:31.000Z',
+        updatedAt: '2019-12-04T02:28:31.000Z',
+        eventId: 80,
+      },
+    };
+    res.send(result);
+  },
   // 'GET /api/works': (req, res) => {
   'GET /invite/2083dc35-79ec-430c-a96b-6054ec15c991/api/vote/works': (req, res) => {
     console.log('GET /api/works');
@@ -118,10 +134,13 @@ export default {
     };
     let worksAll = worksMock;
     let worksRate5 = worksMock.filter(work => work.rating === 5);
+    let worksRate4 = worksMock.filter(work => work.rating === 4);
     let worksRate3 = worksMock.filter(work => work.rating === 3);
+    let worksRate2 = worksMock.filter(work => work.rating === 2);
     let worksRate1 = worksMock.filter(work => work.rating === 1);
     let worksUn = worksMock.filter(work => work.rating === undefined);
     let worksOut = worksMock.filter(work => work.rating === 0);
+    let worksRated = worksMock.filter(work => work.rating !== undefined);
     result.totalCount = worksAll.length;
     result.rate5Count = worksRate5.length;
     result.rate3Count = worksRate3.length;
@@ -139,8 +158,14 @@ export default {
       case '5':
         result.works = worksRate5.slice((page - 1) * limit, page * limit);
         break;
+      case '4':
+        result.works = worksRate4.slice((page - 1) * limit, page * limit);
+        break;
       case '3':
         result.works = worksRate3.slice((page - 1) * limit, page * limit);
+        break;
+      case '2':
+        result.works = worksRate2.slice((page - 1) * limit, page * limit);
         break;
       case '1':
         result.works = worksRate1.slice((page - 1) * limit, page * limit);
@@ -151,6 +176,9 @@ export default {
       case '0':
         result.works = worksOut.slice((page - 1) * limit, page * limit);
         break;
+      case 'rated':
+        result.works = worksRated.slice((page - 1) * limit, page * limit);
+        break;
       default:
         break;
     }
@@ -158,9 +186,22 @@ export default {
     let result2 = {
       works: {
         pager: {},
-        hits: worksMock,
+        hits: result.works,
       },
     };
+
+    if (rating === 'all') {
+      result2.works.facet = {
+        all: worksAll.length,
+        5: worksRate5.length,
+        4: worksRate4.length,
+        3: worksRate3.length,
+        2: worksRate2.length,
+        1: worksRate1.length,
+        0: worksOut.length,
+        unrate: worksUn.length,
+      };
+    }
 
     res.send(result2);
   },
