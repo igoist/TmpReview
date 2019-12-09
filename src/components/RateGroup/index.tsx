@@ -27,7 +27,7 @@ const RateGroup = (props: RateGroupProps) => {
     }
   };
 
-  const arr = list.slice(offset, 5 + offset);
+  const arr = list.slice(0, max).slice(offset, 5 + offset);
   const count = max > 5 ? 5 : max;
   const blank = Object.keys(Array.from({ length: count - list.length }));
 

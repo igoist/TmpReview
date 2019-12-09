@@ -286,19 +286,19 @@ const App = (props: AppPropsType) => {
                 <Radio className={`${HBEditBox}-radio ${HBEditBox}-radio1`} value={0}>
                   淘汰
                 </Radio>
-                <Radio className={`${HBEditBox}-radio ${HBEditBox}-radio2`} value={5} disabled={rate5Count === rate5Max}>
+                <Radio className={`${HBEditBox}-radio ${HBEditBox}-radio2`} value={5} disabled={rate5Count >= rate5Max}>
                   5星(已选{rate5Count}/总{rate5Max})
                 </Radio>
-                <Radio className={`${HBEditBox}-radio ${HBEditBox}-radio3`} value={4} disabled={rate4Count === rate4Max}>
+                <Radio className={`${HBEditBox}-radio ${HBEditBox}-radio3`} value={4} disabled={rate4Count >= rate4Max}>
                   4星(已选{rate4Count}/总{rate4Max})
                 </Radio>
-                <Radio className={`${HBEditBox}-radio ${HBEditBox}-radio4`} value={3} disabled={rate3Count === rate3Max}>
+                <Radio className={`${HBEditBox}-radio ${HBEditBox}-radio4`} value={3} disabled={rate3Count >= rate3Max}>
                   3星(已选{rate3Count}/总{rate3Max})
                 </Radio>
-                <Radio className={`${HBEditBox}-radio ${HBEditBox}-radio5`} value={2} disabled={rate2Count === rate2Max}>
+                <Radio className={`${HBEditBox}-radio ${HBEditBox}-radio5`} value={2} disabled={rate2Count >= rate2Max}>
                   2星(已选{rate2Count}/总{rate2Max})
                 </Radio>
-                <Radio className={`${HBEditBox}-radio ${HBEditBox}-radio6`} value={1} disabled={rate1Count === rate1Max}>
+                <Radio className={`${HBEditBox}-radio ${HBEditBox}-radio6`} value={1} disabled={rate1Count >= rate1Max}>
                   1星(已选{rate1Count}/总{rate1Max})
                 </Radio>
               </Radio.Group>
