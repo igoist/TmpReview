@@ -37,9 +37,7 @@ export default {
       let res = yield requestUrl(`/invite/${password}/api/me`);
 
       if (res && res.invite) {
-        if (!localStorage.getItem('HBER')) {
-          localStorage.setItem('HBER', password);
-        }
+        localStorage.setItem('HBER', password);
 
         if (messageFlag) {
           message.success('登录成功');

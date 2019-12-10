@@ -220,8 +220,6 @@ export default {
       if (callback) {
         callback();
       }
-      // if (res && res.status === 200) {
-      // }
     },
     *postEdit({ type, payload, callback }, { put, call, select }) {
       const ss = yield select(state => state);
@@ -230,6 +228,9 @@ export default {
       // const res = yield postUrl(`/api/works/edit`, { id, rating, comment });
       const res = yield postUrl(`/invite/${login.password}/api/vote/work/${id}`, { rating, comment });
       console.log('here postEdit: ', res);
+      if (res && res.err) {
+        return message.error(res.err);
+      }
       if (rating === 0) {
         message.success('淘汰成功');
       } else {
@@ -239,8 +240,6 @@ export default {
       if (callback) {
         callback();
       }
-      // if (res && res.status === 200) {
-      // }
     },
   },
 };
